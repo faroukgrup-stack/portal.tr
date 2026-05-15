@@ -2,12 +2,12 @@
 <html lang="tr" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <title>Abonelik Aktivasyonu - Farouk Grup</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <title>Abonelik Aktivasyonu - Faruk Grup</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@300;400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         body {
-            font-family: 'Tajawal', sans-serif;
+            font-family: 'Inter', 'Nunito', sans-serif;
             background: #0b0e17; color: white;
             display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;
         }
@@ -41,22 +41,22 @@
     <form id="registrationForm">
         <input type="text" name="fullName" placeholder="Tam Ad" required>
         
-        <!-- E-posta alanı, normal kullanıcı adı yerine -->
-        <input type="email" name="username" placeholder="Abonelik ödemesinde kullanılan e-posta adresi (örn. isim@domain.com)" required inputmode="email">
+        <!-- Kullanıcı adı yerine e-posta adresi -->
+        <input type="email" name="username" placeholder="Abonelik ödemesi sırasında kaydedilen e-posta (ör. mo....@gmail.com)" required inputmode="email">
         
-        <input type="password" name="password" placeholder="Şifre (İngilizce karakterler)" required>
+        <input type="password" name="password" placeholder="Şifre (İngilizce karakterlerle)" required>
         
-        <label style="display:block; text-align:left; font-size: 0.8rem; margin-top: 10px; color: #d4af37;">Abonelik bitiş tarihi (otomatik):</label>
+        <label style="display:block; text-align:left; font-size: 0.8rem; margin-top: 10px; color: #d4af37;">Abonelik Bitiş Tarihi (Otomatik):</label>
         <input type="text" id="expiryDisplay" readonly>
         
         <input type="hidden" name="duration" value="1">
-        <button type="submit" id="regBtn">Hesabı Şimdi Aktifleştir</button>
+        <button type="submit" id="regBtn">Hesabı Şimdi Etkinleştir</button>
     </form>
-    <div id="msg" class="success-msg">Hesabınız aktifleştirildi! Yönlendiriliyorsunuz...</div>
+    <div id="msg" class="success-msg">Hesabınız etkinleştirildi! Portala yönlendiriliyorsunuz...</div>
 </div>
 
 <script>
-    // Bir ay sonrasını hesapla ve göster
+    // Bir ay sonrasının tarihini göster
     const nextMonth = new Date();
     nextMonth.setMonth(nextMonth.getMonth() + 1);
     document.getElementById('expiryDisplay').value = nextMonth.toISOString().split('T')[0];
@@ -67,7 +67,7 @@
         e.preventDefault();
         const btn = document.getElementById('regBtn');
         btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Bağlanıyor...';
+        btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Bağlantı kuruluyor...';
 
         const formData = new FormData(e.target);
         formData.append('action', 'register');
@@ -80,7 +80,7 @@
             }, 3000);
         })
         .catch(error => {
-            alert('Bir hata oluştu, lütfen daha sonra tekrar deneyin.');
+            alert('Bir hata oluştu, lütfen daha sonra tekrar deneyin');
             btn.disabled = false;
         });
     });

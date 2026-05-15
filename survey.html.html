@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="tr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>Hızlı Anket | FAROUK</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Inter', 'Nunito', sans-serif;
+            background: #0B1C2F;
+            padding: 15px;
+            direction: ltr;
+        }
+        .card {
+            background: #0a1a2a;
+            border-radius: 30px;
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 2px solid #C4A747;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            color: white;
+            font-size: 2rem;
+        }
+        .header h1 span { color: #C4A747; }
+        .header .sub {
+            background: #1e2a3a;
+            color: #ccc;
+            padding: 5px 15px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-top: 5px;
+            border: 1px solid #C4A747;
+        }
+        .section {
+            background: #102433;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #C4A74740;
+        }
+        .section-title {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #C4A747;
+            padding-bottom: 5px;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question p {
+            color: white;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        /* Kaydırma çubuğu */
+        .slider-container {
+            direction: ltr; /* soldan sağa */
+            text-align: left;
+            margin-top: 5px;
+        }
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, #e74c3c, #f39c12, #f1c40f, #2ecc71, #27ae60);
+            border-radius: 10px;
+            outline: none;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 25px;
+            height: 25px;
+            background: #C4A747;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            color: #aaa;
+            font-size: 0.8rem;
+            margin-top: 5px;
+            direction: ltr;
+        }
+        .slider-labels span { width: 40px; text-align: center; }
+
+        /* Seçenekler (Butonlar) */
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .option-btn {
+            background: #1e2f3f;
+            border: 1px solid #3a4a5a;
+            border-radius: 30px;
+            padding: 8px 15px;
+            color: white;
+            cursor: pointer;
+            flex: 1 0 auto;
+            text-align: center;
+        }
+        .option-btn input {
+            display: none;
+        }
+        .option-btn input:checked + span {
+            background: #C4A747;
+            color: #0B1C2F;
+            padding: 8px 15px;
+            border-radius: 30px;
+            margin: -8px -15px;
+        }
+        .option-btn span {
+            display: block;
+        }
+        .input-field {
+            margin-bottom: 15px;
+        }
+        .input-field label {
+            color: #ddd;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-field input, .input-field textarea {
+            width: 100%;
+            padding: 10px 12px;
+            background: #1e2f3f;
+            border: 1px solid #3a4a5a;
+            border-radius: 30px;
+            color: white;
+        }
+        .submit-btn {
+            background: #C4A747;
+            border: none;
+            border-radius: 40px;
+            padding: 15px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            width: 100%;
+            cursor: pointer;
+        }
+        #thankYouArea {
+            display: none;
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+        }
+        #thankYouArea div { font-size: 4rem; color: #2ecc71; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="header">
+        <h1><span>★</span> Görüşünüz Önemli <span>★</span></h1>
+        <div class="sub">1 Dakika</div>
+    </div>
+
+    <form id="feedbackForm" 
+          action="https://script.google.com/macros/s/AKfycbwh-Ir-9pkTmEIw5Mi88TY6eCgK8n1mdVP3H_jvX7bGeqIRqTXXHhh0NNKE4X1Nc1aQ/exec" 
+          method="POST" 
+          target="hidden_iframe">
+
+        <input type="hidden" name="التقييم_العام" id="hidden_avg">
+        <input type="hidden" name="تصنيف_العميل" id="hidden_status">
+
+        <!-- İsim (isteğe bağlı) -->
+        <div class="section">
+            <div class="section-title">İletişim Bilgileri (İsteğe bağlı)</div>
+            <div class="input-field">
+                <label>👤 Adınız</label>
+                <input type="text" name="الاسم" placeholder="İsteğe bağlı">
+            </div>
+        </div>
+
+        <!-- Değerlendirme soruları (kaydırma çubuğu ile) -->
+        <div class="section">
+            <div class="section-title">Deneyiminizi Değerlendirin</div>
+
+            <div class="question">
+                <p>1. Sitenin tasarımı hakkındaki izleniminiz</p>
+                <div class="slider-container">
+                    <input type="range" name="تجربة المستخدم" min="1" max="5" value="3" step="1" id="q1">
+                </div>
+                <div class="slider-labels">
+                    <span>Mükemmel</span><span>Çok İyi</span><span>İyi</span><span>Orta</span><span>Kötü</span>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>2. Araçların kullanım kolaylığı</p>
+                <div class="slider-container">
+                    <input type="range" name="سهولة التعامل مع الأدوات" min="1" max="5" value="3" step="1">
+                </div>
+                <div class="slider-labels">
+                    <span>Mükemmel</span><span>Çok İyi</span><span>İyi</span><span>Orta</span><span>Kötü</span>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>3. Sitenin yüklenme hızı</p>
+                <div class="slider-container">
+                    <input type="range" name="السرعة" min="1" max="5" value="3" step="1">
+                </div>
+                <div class="slider-labels">
+                    <span>Mükemmel</span><span>Çok İyi</span><span>İyi</span><span>Orta</span><span>Kötü</span>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>4. Mobil deneyim</p>
+                <div class="slider-container">
+                    <input type="range" name="مريحة" min="1" max="5" value="3" step="1">
+                </div>
+                <div class="slider-labels">
+                    <span>Mükemmel</span><span>Çok İyi</span><span>İyi</span><span>Orta</span><span>Kötü</span>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>5. Hesaplama sonuçlarının doğruluğu</p>
+                <div class="slider-container">
+                    <input type="range" name="دقيقة" min="1" max="5" value="3" step="1">
+                </div>
+                <div class="slider-labels">
+                    <span>Mükemmel</span><span>Çok İyi</span><span>İyi</span><span>Orta</span><span>Kötü</span>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>6. Terimlerin açıklanması (ROI, P&L)</p>
+                <div class="slider-container">
+                    <input type="range" name="المصطلحات" min="1" max="5" value="3" step="1">
+                </div>
+                <div class="slider-labels">
+                    <span>Mükemmel</span><span>Çok İyi</span><span>İyi</span><span>Orta</span><span>Kötü</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ek sorular -->
+        <div class="section">
+            <div class="section-title">Hızlı Sorular</div>
+
+            <div class="question">
+                <p>Siteyi "Uygulama" olarak yüklediniz mi?</p>
+                <div class="options">
+                    <label class="option-btn"><input type="radio" name="تثبيت_التطبيق" value="Evet"><span>Evet</span></label>
+                    <label class="option-btn"><input type="radio" name="تثبيت_التطبيق" value="Hayır"><span>Hayır</span></label>
+                    <label class="option-btn"><input type="radio" name="تثبيت_التطبيق" value="Görünmedi"><span>Görünmedi</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>Yüklediyseniz, simge net görünüyor mu?</p>
+                <div class="options">
+                    <label class="option-btn"><input type="radio" name="الايقونة" value="Evet"><span>Evet</span></label>
+                    <label class="option-btn"><input type="radio" name="الايقونة" value="Hayır"><span>Hayır</span></label>
+                    <label class="option-btn"><input type="radio" name="الايقونة" value="Yüklemedim"><span>Yüklemedim</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>Bu araçları meslektaşlarınıza tavsiye eder misiniz?</p>
+                <div class="options">
+                    <label class="option-btn"><input type="radio" name="نصيحة" value="Evet"><span>Evet</span></label>
+                    <label class="option-btn"><input type="radio" name="نصيحة" value="Hayır"><span>Hayır</span></label>
+                    <label class="option-btn"><input type="radio" name="نصيحة" value="Belki"><span>Belki</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>Video dersler eklenmesini ister misiniz?</p>
+                <div class="options">
+                    <label class="option-btn"><input type="radio" name="دروس" value="Evet"><span>Evet</span></label>
+                    <label class="option-btn"><input type="radio" name="دروس" value="Hayır"><span>Hayır</span></label>
+                </div>
+            </div>
+
+            <div class="input-field">
+                <label>✍️ Ek Öneriler</label>
+                <textarea name="الاقتراحات" rows="2" placeholder="Buraya yazın..."></textarea>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-btn">Değerlendirmeyi Gönder</button>
+    </form>
+
+    <iframe name="hidden_iframe" style="display:none;"></iframe>
+
+    <div id="thankYouArea">
+        <div>✓</div>
+        <h2 style="color:white;">Çok Teşekkürler!</h2>
+        <p style="color:#ccc;">Değerlendirmeniz başarıyla alındı</p>
+    </div>
+</div>
+
+<script>
+    (function() {
+        const form = document.getElementById('feedbackForm');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Kaydırıcıların ortalamasını hesapla (her biri 1-5 arası)
+            const sliders = ['تجربة المستخدم', 'سهولة التعامل مع الأدوات', 'السرعة', 'مريحة', 'دقيقة', 'المصطلحات'];
+            let sum = 0, count = 0;
+            sliders.forEach(name => {
+                const slider = form.querySelector(`input[name="${name}"]`);
+                if (slider) {
+                    sum += parseInt(slider.value);
+                    count++;
+                }
+            });
+            if (count > 0) {
+                const avg = (sum / count).toFixed(1);
+                let status = avg <= 2.5 ? 'Memnun Değil ❌' : avg <= 3.5 ? 'Kararsız ⚠️' : 'Memnun ✅';
+                document.getElementById('hidden_avg').value = avg;
+                document.getElementById('hidden_status').value = status;
+            }
+
+            // Formu gönder
+            form.submit();
+
+            // Teşekkür mesajını göster
+            setTimeout(() => {
+                form.style.display = 'none';
+                document.querySelector('.header').style.display = 'none';
+                document.getElementById('thankYouArea').style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 200);
+        });
+    })();
+</script>
+</body>
+</html>

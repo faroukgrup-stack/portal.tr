@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finansal ve Danışmanlık Hesap Makinesi | FAROUK GRUP</title>
+    <title>Finansal Danışman Hesap Makinesi | FAROUK GRUP</title>
     <!-- Sayfa koruması -->
     <script src="auth-check.js"></script>
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@300;400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
@@ -32,7 +32,7 @@
             --danger: #dc3545;
         }
         body {
-            font-family: 'Tajawal', sans-serif;
+            font-family: 'Inter', 'Nunito', sans-serif;
             background: radial-gradient(circle at 70% 30%, #141c2b, #0a0e16);
             color: var(--text-light);
             min-height: 100vh;
@@ -41,7 +41,7 @@
             position: relative;
         }
 
-        /* Arka plan parlaklığı */
+        /* Parıltılı arka plan */
         .glow-bg {
             position: fixed;
             width: 100%;
@@ -68,7 +68,7 @@
             100% { transform: translate(40px, -30px) scale(1.2); opacity: 0.8; }
         }
 
-        /* Başlık çubuğu (kullanıcı adı ve çıkış olmadan) */
+        /* Header (kullanıcı adı ve çıkış butonu olmadan) */
         .header-bar {
             display: flex;
             justify-content: space-between;
@@ -234,7 +234,7 @@
         }
         .btn-equals:hover { background: var(--gold-light); color: #111; }
         .btn-finance {
-            font-family: 'Tajawal', sans-serif;
+            font-family: 'Nunito', sans-serif;
             font-size: 0.8rem;
             background: rgba(30,74,122,0.3);
             border-color: #1e4a7a;
@@ -242,7 +242,7 @@
         }
         .btn-finance:hover { background: rgba(30,74,122,0.5); color: #fff; }
 
-        /* Geçmiş paneli */
+        /* Kayıt bölümü */
         .history-panel {
             flex: 1;
             background: var(--bg-panel);
@@ -279,7 +279,7 @@
             padding: 0.4rem 0.8rem;
             border-radius: var(--radius-sm);
             border: 2px solid var(--border-light);
-            font-family: 'Tajawal', sans-serif;
+            font-family: 'Nunito', sans-serif;
             font-size: 0.85rem;
             outline: none;
             background: rgba(10,14,23,0.7);
@@ -387,14 +387,14 @@
             border-radius: var(--radius-sm);
             cursor: pointer;
             transition: 0.2s;
-            font-family: 'Tajawal', sans-serif;
+            font-family: 'Nunito', sans-serif;
         }
         .btn-clear-all:hover {
             background: rgba(220,53,69,0.2);
             border-color: #f87171;
         }
 
-        /* Footer */
+        /* Alt bilgi */
         .footer-simple {
             text-align: center;
             padding: 1rem;
@@ -419,24 +419,23 @@
         }
     </style>
 </head>
-<body>
 <body style="overflow-x: hidden;">
     <div class="glow-bg"><span></span><span></span><span></span></div>
 
-    <!-- Başlık çubuğu (kullanıcı adı ve çıkış yok) -->
+    <!-- Header (kullanıcı adı ve çıkış butonu olmadan) -->
     <div class="header-bar">
         <div class="datetime">
             <div><i class="fas fa-calendar-alt"></i> <span id="currentDate"></span></div>
             <div><i class="fas fa-clock"></i> <span id="currentTime"></span></div>
         </div>
-        <div class="header-title">Farouk Grup Danışmanlık ve İşletme</div>
+        <div class="header-title">Faruk Grup Danışmanlık ve İş Hizmetleri</div>
     </div>
 
     <div class="main-content">
         <div class="calc-container">
             <div class="calculator">
                 <div class="calculator-header">
-                    <h2><i class="fas fa-calculator"></i> Danışmanlık Hesap Makinesi</h2>
+                    <h2><i class="fas fa-calculator"></i> Danışman Hesap Makinesi</h2>
                 </div>
                 <div class="error-message" id="errorMessage"></div>
                 <div class="screen-container">
@@ -474,6 +473,7 @@
                     <button class="btn btn-operator" onclick="setOperator('+')">+</button>
                     <button class="btn" onclick="calculatePercent()">%</button>
 
+
                     <button class="btn btn-finance" onclick="applyTax()">Vergi</button>
                     <button class="btn btn-finance" onclick="applyDiscount()">İndirim</button>
                     <button class="btn btn-finance" onclick="calculateROI()">ROI</button>
@@ -489,7 +489,7 @@
 
             <div class="history-panel">
                 <div class="history-header">
-                    <h3><i class="fas fa-table"></i> İşlem Geçmişi</h3>
+                    <h3><i class="fas fa-table"></i> İşlem Kaydı</h3>
                     <div class="history-controls">
                         <select id="filterSelect" class="filter-select" onchange="filterHistory()">
                             <option value="all">Tüm İşlemler</option>
@@ -497,7 +497,7 @@
                             <option value="-">Çıkarma (-)</option>
                             <option value="*">Çarpma (×)</option>
                             <option value="/">Bölme (÷)</option>
-                            <option value="مالية">Finansal / Gelişmiş İşlemler</option>
+                            <option value="Finans">Finansal / Gelişmiş</option>
                         </select>
                         <button class="btn-export" onclick="exportHistory()"><i class="fas fa-download"></i> CSV Dışa Aktar</button>
                     </div>
@@ -505,21 +505,22 @@
                 <div class="table-container">
                     <table class="history-table">
                         <thead>
-                            <tr><th style="width: 15%;">Tür</th><th style="width: 45%;">Yapılan İşlem</th><th style="width: 25%;">Sonuç</th><th style="width: 15%; text-align: center;">İşlem</th> </thead>
+                            <tr><th style="width: 15%;">Tür</th><th style="width: 45%;">Yapılan İşlem</th><th style="width: 25%;">Sonuç</th><th style="width: 15%; text-align: center;">Aksiyon</th></tr>
+                        </thead>
                         <tbody id="historyTableBody"></tbody>
-                      </table>
+                    </table>
                 </div>
-                <button class="btn-clear-all" onclick="clearHistory()"><i class="fas fa-trash-alt"></i> Tüm Geçmişi Sil</button>
+                <button class="btn-clear-all" onclick="clearHistory()"><i class="fas fa-trash-alt"></i> Tüm Kaydı Temizle</button>
             </div>
         </div>
     </div>
 
     <footer class="footer-simple">
-        Tüm Hakları Saklıdır © 2026 <span>FAROUK GRUP</span>
+        Tüm hakları saklıdır © 2026 <span>FAROUK GRUP</span>
     </footer>
 
-    <!-- Ana Sayfaya Dönüş Butonu (sağ altta) -->
-    <a href="index.html" style="position: fixed; bottom: 20px; right: 20px; background: rgba(180,133,84,0.9); color: white; padding: 12px 20px; border-radius: 50px; text-decoration: none; font-family: 'Tajawal', sans-serif; font-weight: bold; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 9999; display: flex; align-items: center; gap: 8px; transition: 0.3s;" onmouseover="this.style.backgroundColor='#b48554'; this.style.transform='scale(1.05)';" onmouseout="this.style.backgroundColor='rgba(180,133,84,0.9)'; this.style.transform='scale(1)';">
+    <!-- Ana sayfaya dön butonu (yüzer) -->
+    <a href="index.html" style="position: fixed; bottom: 20px; right: 20px; background: rgba(180,133,84,0.9); color: white; padding: 12px 20px; border-radius: 50px; text-decoration: none; font-family: 'Nunito', sans-serif; font-weight: bold; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 9999; display: flex; align-items: center; gap: 8px; transition: 0.3s;" onmouseover="this.style.backgroundColor='#b48554'; this.style.transform='scale(1.05)';" onmouseout="this.style.backgroundColor='rgba(180,133,84,0.9)'; this.style.transform='scale(1)';">
         <i class="fas fa-home"></i> Ana Sayfa
     </a>
 
@@ -527,7 +528,7 @@
     <script>
         AOS.init({ duration: 800, once: true });
 
-        // ========== Zaman ve Tarih Fonksiyonları ==========
+        // ========== Zaman ve tarih fonksiyonları ==========
         function updateDateTime() {
             const now = new Date();
             document.getElementById('currentDate').innerText = now.toLocaleDateString('tr-TR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -536,7 +537,7 @@
         setInterval(updateDateTime, 1000);
         updateDateTime();
 
-        // ========== Hesap Makinesi Kodları (orijinal yapı, sadece kullanıcı mesajları Türkçe) ==========
+        // ========== Hesap Makinesi Kodu Tamamen (orijinal dosyadan) ==========
         let display = document.getElementById('display');
         let historyDisplayElem = document.getElementById('historyDisplay');
         let errorMsgElem = document.getElementById('errorMessage');
@@ -620,7 +621,7 @@
                 case '*': result = prev * curr; break;
                 case '/': 
                     if (curr === 0) {
-                        showError('Matematik hatası: sıfıra bölme');
+                        showError('Matematiksel hata: Sıfıra bölme');
                         return;
                     }
                     result = prev / curr; 
@@ -688,7 +689,7 @@
             let res = Math.sqrt(value);
             res = Math.round(res * 1000000000) / 1000000000;
             currentInput = res.toString();
-            history.unshift({ text: `√(${value}) = ${currentInput}`, type: 'مالية' });
+            history.unshift({ text: `√(${value}) = ${currentInput}`, type: 'Finans' });
             filterHistory();
             updateDisplay();
         }
@@ -696,20 +697,20 @@
         function calculateReciprocal() {
             let value = parseFloat(currentInput);
             if (value === 0) {
-                showError('Sıfıra bölme yapılamaz');
+                showError('Sıfıra bölünemez');
                 return;
             }
             let res = 1 / value;
             res = Math.round(res * 1000000000) / 1000000000;
             currentInput = res.toString();
-            history.unshift({ text: `1/(${value}) = ${currentInput}`, type: 'مالية' });
+            history.unshift({ text: `1/(${value}) = ${currentInput}`, type: 'Finans' });
             filterHistory();
             updateDisplay();
         }
 
         function power() {
             let base = parseFloat(currentInput);
-            let exponent = prompt('Üs değerini girin (kuvvet):', '2');
+            let exponent = prompt('Üs değerini girin:', '2');
             if (exponent === null || exponent.trim() === '') return;
             let exp = parseFloat(exponent);
             if (isNaN(exp)) { showError('Geçersiz değer'); return; }
@@ -717,18 +718,18 @@
             let res = Math.pow(base, exp);
             res = Math.round(res * 1000000000) / 1000000000;
             currentInput = res.toString();
-            history.unshift({ text: `${base}^${exp} = ${currentInput}`, type: 'مالية' });
+            history.unshift({ text: `${base}^${exp} = ${currentInput}`, type: 'Finans' });
             filterHistory();
             updateDisplay();
         }
 
         function log10() {
             let val = parseFloat(currentInput);
-            if (val <= 0) { showError('Logaritma yalnızca pozitif sayılar için'); return; }
+            if (val <= 0) { showError('Logaritma yalnızca pozitif sayılar için geçerlidir'); return; }
             let res = Math.log10(val);
             res = Math.round(res * 1000000000) / 1000000000;
             currentInput = res.toString();
-            history.unshift({ text: `log10(${val}) = ${currentInput}`, type: 'مالية' });
+            history.unshift({ text: `log10(${val}) = ${currentInput}`, type: 'Finans' });
             filterHistory();
             updateDisplay();
         }
@@ -736,19 +737,19 @@
         function factorial() {
             let n = parseInt(currentInput);
             if (isNaN(n) || n < 0 || n > 170) { 
-                showError('Pozitif tam sayı girin (170\'den küçük)'); 
+                showError('Pozitif tam sayı girin (170\'ten küçük)'); 
                 return; 
             }
             let fact = 1;
             for (let i = 2; i <= n; i++) fact *= i;
             currentInput = fact.toString();
-            history.unshift({ text: `${n}! = ${currentInput}`, type: 'مالية' });
+            history.unshift({ text: `${n}! = ${currentInput}`, type: 'Finans' });
             filterHistory();
             updateDisplay();
         }
 
         function applyTax() {
-            let rate = prompt('KDV oranını girin (%) (örn: 15):', '15');
+            let rate = prompt('Eklenecek vergi oranını girin (%) (örn: 15):', '15');
             if (rate === null || rate.trim() === '') return;
             let r = parseFloat(rate);
             if (isNaN(r)) return;
@@ -758,7 +759,7 @@
             let result = amount + taxValue;
             result = Math.round(result * 100) / 100;
             
-            history.unshift({ text: `${amount} + %${r} KDV = ${result}`, type: 'مالية' });
+            history.unshift({ text: `${amount} + Vergi %${r} = ${result}`, type: 'Finans' });
             currentInput = result.toString();
             updateDisplay();
             filterHistory();
@@ -775,7 +776,7 @@
             let result = amount - discountValue;
             result = Math.round(result * 100) / 100;
             
-            history.unshift({ text: `${amount} - %${r} indirim = ${result}`, type: 'مالية' });
+            history.unshift({ text: `${amount} - İndirim %${r} = ${result}`, type: 'Finans' });
             currentInput = result.toString();
             updateDisplay();
             filterHistory();
@@ -793,7 +794,7 @@
             let roi = ((rev - cost) / cost) * 100;
             roi = Math.round(roi * 100) / 100;
             
-            history.unshift({ text: `ROI (Maliyet:${cost}, Getiri:${rev}) = %${roi}`, type: 'مالية' });
+            history.unshift({ text: `ROI (Maliyet:${cost}, Getiri:${rev}) = %${roi}`, type: 'Finans' });
             currentInput = roi.toString();
             updateDisplay();
             filterHistory();
@@ -815,7 +816,7 @@
             let interest = principal * r * t;
             interest = Math.round(interest * 100) / 100;
             
-            history.unshift({ text: `Faiz (${principal} × %${r*100} × ${t}yıl) = ${interest}`, type: 'مالية' });
+            history.unshift({ text: `Faiz (${principal}×%${r*100}×${t}yıl) = ${interest}`, type: 'Finans' });
             currentInput = interest.toString();
             updateDisplay();
             filterHistory();
@@ -824,7 +825,7 @@
         function handleMemory(cmd) {
             let value = parseFloat(currentInput);
             switch (cmd) {
-                case 'MC': memory = 0; historyDisplayElem.innerText = "Bellek Silindi"; setTimeout(()=>historyDisplayElem.innerText="",1000); break;
+                case 'MC': memory = 0; historyDisplayElem.innerText = "Memory Cleared"; setTimeout(()=>historyDisplayElem.innerText="",1000); break;
                 case 'MR': currentInput = memory.toString(); updateDisplay(); break;
                 case 'M+': memory += value; historyDisplayElem.innerText = "M+ " + value; setTimeout(()=>historyDisplayElem.innerText="",1000); break;
                 case 'M-': memory -= value; historyDisplayElem.innerText = "M- " + value; setTimeout(()=>historyDisplayElem.innerText="",1000); break;
@@ -842,17 +843,18 @@
                 let parts = item.text.split('=');
                 let operationStr = parts[0] ? parts[0].trim() : '';
                 let resultStr = parts[1] ? parts[1].trim() : item.text;
-                let badgeClass = item.type === 'مالية' ? 'badge-finance' : 'badge-math';
+                let badgeClass = item.type === 'Finans' ? 'badge-finance' : 'badge-math';
+                let typeDisplay = (item.type === 'Finans') ? 'Finans' : item.type; // matematiksel işlem sembolü
 
                 let tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td><span class="badge ${badgeClass}">${item.type === 'مالية' ? 'Finansal' : item.type}</span></td>
+                    <td><span class="badge ${badgeClass}">${typeDisplay}</span></td>
                     <td class="td-operation">${operationStr}</td>
                     <td class="td-result">${resultStr}</td>
                     <td>
                         <div class="action-btns">
-                            <button class="icon-btn restore" title="Sonucu Kullan" onclick="restoreResult('${resultStr}')"><i class="fas fa-reply"></i></button>
-                            <button class="icon-btn delete" title="Kaydı Sil" onclick="deleteHistoryItem(${index})"><i class="fas fa-trash"></i></button>
+                            <button class="icon-btn restore" title="Sonucu kullan" onclick="restoreResult('${resultStr}')"><i class="fas fa-reply"></i></button>
+                            <button class="icon-btn delete" title="Kaydı sil" onclick="deleteHistoryItem(${index})"><i class="fas fa-trash"></i></button>
                         </div>
                     </td>
                 `;
@@ -885,7 +887,7 @@
         }
 
         function clearHistory() {
-            if(confirm("Tüm hesap kayıtlarını silmek istediğinizden emin misiniz?")) {
+            if(confirm("Tüm hesaplama kayıtlarını silmek istediğinizden emin misiniz?")) {
                 history = [];
                 filterHistory();
             }
@@ -893,7 +895,7 @@
 
         function exportHistory() {
             if(history.length === 0) {
-                showError("Geçmiş boş, dışa aktarılacak veri yok");
+                showError("Kayıt boş, dışa aktarılacak bir şey yok");
                 return;
             }
             let csv = 'Tür,Yapılan İşlem,Sonuç\n';
@@ -901,13 +903,12 @@
                 let parts = item.text.split('=');
                 let op = parts[0].trim().replace(/"/g, '""');
                 let res = parts[1] ? parts[1].trim().replace(/"/g, '""') : '';
-                let typeLabel = item.type === 'مالية' ? 'Finansal' : item.type;
-                csv += `"${typeLabel}","${op}","${res}"\n`;
+                csv += `"${item.type}","${op}","${res}"\n`;
             });
             let blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
             let link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `Hesap_Geçmişi_FAROUK_${new Date().toISOString().slice(0,10)}.csv`;
+            link.download = `Islem_Kaydi_Faruk_${new Date().toISOString().slice(0,10)}.csv`;
             link.click();
         }
 
@@ -931,7 +932,7 @@
             else if (key === 'Backspace') backspace();
         });
 
-        // Başlangıç
+        // Tabloyu ilk yükle
         filterHistory();
     </script>
 </body>

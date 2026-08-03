@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-<title>Gelişmiş Restoran Teknik Fizibilite Çalışması | FAROUK GRUP</title>
+<title>Restoranlar için İleri Teknik Fizibilite Çalışması | FAROUK GRUP</title>
 <!-- Sayfa koruması -->
 <script src="auth-check.js"></script>
 <!-- Fonts & Icons -->
@@ -14,9 +14,8 @@
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<!-- html2canvas -->
+<!-- html2canvas ve Excel -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<!-- Excel -->
 <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <style>
@@ -30,7 +29,7 @@ html, body {
     padding-bottom: 140px !important;
 }
 
-/* ===== Titreşim önleyici ===== */
+/* ===== Tüm titreşimlere neden olan öğeleri sıfırla ===== */
 .calc-box, .result-card, .chart-container, canvas, .table-container,
 .btn-calculate, .chart-card, .scenario-card, .collapsible, .hero-mini,
 .currency-row, .featured-badge, .glow-bg, .floating-shape,
@@ -230,7 +229,7 @@ tr:last-child td { border-bottom: none; }
 }
 .chart-container canvas { width: 100% !important; height: 100% !important; }
 
-/* ===== Açılır kapanır ===== */
+/* ===== Katlanabilir öğeler ===== */
 .collapsible {
     background: rgba(180,133,84,0.10); color: #cfa776; cursor: pointer;
     padding: 0.8rem 1.2rem; width: 100%;
@@ -403,7 +402,7 @@ tr:last-child td { border-bottom: none; }
 .alert-success { background: rgba(40,167,69,0.2); color: #4ade80; border: 1px solid #28a745; }
 
 /* ===================================================
-   Büyük ekran (bilgisayar)
+   Büyük ekran (bilgisayar) iyileştirmeleri
    =================================================== */
 @media (min-width: 1024px) {
     .featured-badge { display: flex; }
@@ -425,7 +424,7 @@ tr:last-child td { border-bottom: none; }
 }
 
 /* ===================================================
-   Mobil (≤ 768px)
+   Mobil (≤ 768px) iyileştirmeleri
    =================================================== */
 @media (max-width: 768px) {
     .hero-mini { padding: 1.8rem 1rem; }
@@ -498,7 +497,7 @@ tr:last-child td { border-bottom: none; }
 <div class="floating-shape shape-2"></div>
 
 <section class="hero-mini">
-    <h2>Gelişmiş Restoran Teknik Fizibilite Çalışması</h2>
+    <h2>Restoranlar için İleri Teknik Fizibilite Çalışması</h2>
     <p>Alan, ekipman, üretim kapasitesi, performans göstergeleri ve teknik-finansal değerlendirme</p>
 </section>
 
@@ -525,59 +524,59 @@ tr:last-child td { border-bottom: none; }
         <!-- Kapsam ve özellikler -->
         <div class="section-title-sm">📋 Kapsam ve Özellikler</div>
         <div class="form-row">
-            <div class="form-group tooltip"><label><i class="fas fa-utensils"></i> Mutfak Tipi</label><select id="kitchenType"><option value="fastfood">Fast Food</option><option value="fine">Lüks Restoran</option><option value="eastern">Doğu Mutfağı</option><option value="italian">İtalyan</option><option value="grill">Izgara</option><option value="seafood">Deniz Ürünleri</option><option value="cafe">Kafe</option></select><span class="tooltiptext">Ana mutfak tipi</span></div>
+            <div class="form-group tooltip"><label><i class="fas fa-utensils"></i> Mutfak Türü</label><select id="kitchenType"><option value="fastfood">Hızlı Yemek</option><option value="fine">Lüks Restoran</option><option value="eastern">Doğu Mutfağı</option><option value="italian">İtalyan</option><option value="grill">Izgara</option><option value="seafood">Deniz Ürünleri</option><option value="cafe">Kafe</option></select><span class="tooltiptext">Ana mutfak türü</span></div>
             <div class="form-group tooltip"><label><i class="fas fa-chair"></i> Sandalye Sayısı</label><input type="number" id="seats" value="50" min="1" step="5"><span class="tooltiptext">Toplam oturma kapasitesi</span></div>
             <div class="form-group tooltip"><label><i class="fas fa-concierge-bell"></i> Hizmet Modeli</label><select id="serviceModel"><option value="waiter">Masa Servisi</option><option value="self">Self Servis</option><option value="delivery">Sadece Teslimat</option><option value="mixed">Karma</option></select><span class="tooltiptext">Hizmet sunum şekli</span></div>
         </div>
         <div class="form-row">
-            <div class="form-group tooltip"><label><i class="fas fa-clock"></i> Günlük Çalışma Saati</label><input type="number" id="hoursOpen" value="12" min="1" max="24"><span class="tooltiptext">Günlük çalışma saati</span></div>
-            <div class="form-group tooltip"><label><i class="fas fa-moon"></i> Vardiya Sayısı</label><select id="shifts"><option value="1">Tek vardiya (Öğle)</option><option value="2">İki vardiya (Öğle-Akşam)</option><option value="3">Çoklu vardiya</option></select><span class="tooltiptext">Günlük çalışma vardiya sayısı</span></div>
+            <div class="form-group tooltip"><label><i class="fas fa-clock"></i> Günlük Çalışma Saati</label><input type="number" id="hoursOpen" value="12" min="1" max="24"><span class="tooltiptext">Günde çalışma saati</span></div>
+            <div class="form-group tooltip"><label><i class="fas fa-moon"></i> Çalışma Periyotları</label><select id="shifts"><option value="1">Tek Periyot (Öğle)</option><option value="2">İki Periyot (Öğle ve Akşam)</option><option value="3">Çoklu Periyot</option></select><span class="tooltiptext">Günlük çalışma periyot sayısı</span></div>
         </div>
 
-        <!-- Konum Analizi -->
+        <!-- Konum analizi -->
         <div class="section-title-sm">📍 Konum Analizi</div>
         <div class="form-row">
             <div class="form-group tooltip"><label><i class="fas fa-vector-square"></i> Toplam Alan (m²)</label><input type="number" id="totalArea" value="150" min="20" step="10"><span class="tooltiptext">Restoranın toplam alanı</span></div>
-            <div class="form-group tooltip"><label><i class="fas fa-percent"></i> Mutfak Alan Oranı (%)</label><input type="number" id="kitchenPercent" value="35" min="20" max="60" step="5"><span class="tooltiptext">Mutfak alanının toplam alana oranı</span></div>
+            <div class="form-group tooltip"><label><i class="fas fa-percent"></i> Mutfak Alan Oranı (%)</label><input type="number" id="kitchenPercent" value="35" min="20" max="60" step="5"><span class="tooltiptext">Mutfağın toplam alana oranı</span></div>
         </div>
         <div class="form-row">
-            <div class="form-group tooltip"><label><i class="fas fa-bolt"></i> Elektrik Kapasitesi (Amper)</label><input type="number" id="electricalCapacity" value="200" min="50" step="10"><span class="tooltiptext">Mekanın elektrik kapasitesi</span></div>
-            <div class="form-group tooltip"><label><i class="fas fa-water"></i> Su Kaynağı</label><select id="waterAvailability"><option value="yes">Evet - Uygun</option><option value="partial">Geliştirilmeli</option><option value="no">Hayır - Uygun Değil</option></select></div>
+            <div class="form-group tooltip"><label><i class="fas fa-bolt"></i> Elektrik Kapasitesi (Amper)</label><input type="number" id="electricalCapacity" value="200" min="50" step="10"><span class="tooltiptext">Mevcut elektrik gücü</span></div>
+            <div class="form-group tooltip"><label><i class="fas fa-water"></i> Su Kaynağı</label><select id="waterAvailability"><option value="yes">Evet – Uygun</option><option value="partial">Geliştirme Gerekli</option><option value="no">Hayır – Uygun Değil</option></select></div>
         </div>
         <div class="form-row">
-            <div class="form-group tooltip"><label><i class="fas fa-wind"></i> Havalandırma Sistemi</label><select id="ventilation"><option value="yes">Evet - Uygun</option><option value="partial">Geliştirilmeli</option><option value="no">Hayır - Uygun Değil</option></select></div>
-            <div class="form-group tooltip"><label><i class="fas fa-truck"></i> Teslimat Kolaylığı</label><select id="deliveryAccess"><option value="yes">Evet - Mükemmel</option><option value="partial">Orta</option><option value="no">Zor</option></select></div>
+            <div class="form-group tooltip"><label><i class="fas fa-wind"></i> Havalandırma Sistemi</label><select id="ventilation"><option value="yes">Evet – Uygun</option><option value="partial">Geliştirme Gerekli</option><option value="no">Hayır – Uygun Değil</option></select></div>
+            <div class="form-group tooltip"><label><i class="fas fa-truck"></i> Teslimat Kolaylığı</label><select id="deliveryAccess"><option value="yes">Evet – Mükemmel</option><option value="partial">Orta</option><option value="no">Zor</option></select></div>
         </div>
 
-        <!-- Ekipmanlar -->
+        <!-- Ekipman -->
         <div class="section-title-sm">🔧 Ekipman Gereksinimleri</div>
         <div id="equipmentContainer"></div>
         <button class="add-equipment-btn" id="addEquipmentBtn">➕ Ekipman Ekle</button>
         <div id="powerAlert" class="alert" style="display:none;"></div>
 
-        <!-- Üretim Kapasitesi ve Verimlilik -->
+        <!-- Üretim kapasitesi -->
         <div class="section-title-sm">⚡ Üretim Kapasitesi ve Operasyonel Verimlilik</div>
         <div class="form-row">
-            <div class="form-group tooltip"><label><i class="fas fa-rotate-left"></i> Masa Devir Hızı</label><input type="number" id="turnoverRate" value="2" min="0.5" step="0.5"><span class="tooltiptext">Yoğun saatte masa devir sayısı</span></div>
-            <div class="form-group tooltip"><label><i class="fas fa-clock"></i> Günlük Yoğun Saat</label><input type="number" id="peakHours" value="4" min="1" max="12"><span class="tooltiptext">Günlük yoğun çalışma saati</span></div>
-            <div class="form-group tooltip"><label><i class="fas fa-percent"></i> Beklenen Doluluk Oranı %</label><input type="number" id="occupancyRate" value="70" min="10" max="100" step="5"><span class="tooltiptext">Maksimum kapasiteye göre doluluk oranı</span></div>
+            <div class="form-group tooltip"><label><i class="fas fa-rotate-left"></i> Masa Devir Hızı</label><input type="number" id="turnoverRate" value="2" min="0.5" step="0.5"><span class="tooltiptext">Yoğun saatte bir masanın doluluk sayısı</span></div>
+            <div class="form-group tooltip"><label><i class="fas fa-clock"></i> Günlük Yoğun Saat</label><input type="number" id="peakHours" value="4" min="1" max="12"><span class="tooltiptext">Günde yoğun saat sayısı</span></div>
+            <div class="form-group tooltip"><label><i class="fas fa-percent"></i> Beklenen Doluluk Oranı %</label><input type="number" id="occupancyRate" value="70" min="10" max="100" step="5"><span class="tooltiptext">Maksimum kapasiteye göre beklenen doluluk</span></div>
         </div>
         <div class="form-row">
-            <div class="form-group tooltip"><label><i class="fas fa-hamburger"></i> Ortalama Yemek Fiyatı</label><input type="number" id="avgMealPrice" value="50" step="5"><span class="tooltiptext">Müşteri başı ortalama yemek fiyatı</span></div>
-            <div class="form-group tooltip"><label><i class="fas fa-percent"></i> Yiyecek Maliyeti (%)</label><input type="number" id="foodCostPercent" value="30" min="10" max="80"><span class="tooltiptext">Yemek maliyetinin fiyata oranı</span></div>
-            <div class="form-group tooltip"><label><i class="fas fa-briefcase"></i> Çalışan Sayısı</label><input type="number" id="employeesCount" value="6" min="1" step="1"><span class="tooltiptext">Çalışan sayısı</span></div>
+            <div class="form-group tooltip"><label><i class="fas fa-hamburger"></i> Ortalama Yemek Fiyatı</label><input type="number" id="avgMealPrice" value="50" step="5"><span class="tooltiptext">Müşteri başına ortalama yemek fiyatı</span></div>
+            <div class="form-group tooltip"><label><i class="fas fa-percent"></i> Yiyecek Maliyeti (%)</label><input type="number" id="foodCostPercent" value="30" min="10" max="80"><span class="tooltiptext">Yiyecek maliyetinin yemek fiyatına oranı</span></div>
+            <div class="form-group tooltip"><label><i class="fas fa-briefcase"></i> Çalışan Sayısı</label><input type="number" id="employeesCount" value="6" min="1" step="1"><span class="tooltiptext">Toplam çalışan sayısı</span></div>
         </div>
         <div class="form-row">
-            <div class="form-group tooltip"><label><i class="fas fa-user-tie"></i> Ortalama Aylık Maaş</label><input type="number" id="avgSalary" value="2000" step="100"><span class="tooltiptext">Çalışan başı ortalama aylık maaş</span></div>
+            <div class="form-group tooltip"><label><i class="fas fa-user-tie"></i> Ortalama Aylık Maaş</label><input type="number" id="avgSalary" value="2000" step="100"><span class="tooltiptext">Çalışan başına ortalama aylık maaş</span></div>
             <div class="form-group tooltip"><label><i class="fas fa-home"></i> Aylık Kira</label><input type="number" id="monthlyRent" value="4000" step="100"><span class="tooltiptext">Restoranın aylık kirası</span></div>
-            <div class="form-group tooltip"><label><i class="fas fa-tools"></i> Diğer Faaliyet Giderleri</label><input type="number" id="otherOpCost" value="2000" step="100"><span class="tooltiptext">Diğer aylık giderler</span></div>
+            <div class="form-group tooltip"><label><i class="fas fa-tools"></i> Diğer Operasyonel Giderler</label><input type="number" id="otherOpCost" value="2000" step="100"><span class="tooltiptext">Diğer aylık giderler</span></div>
         </div>
         <div class="form-row">
-            <div class="form-group tooltip"><label><i class="fas fa-calendar-alt"></i> Ekipman Ekonomik Ömrü (Yıl)</label><input type="number" id="equipmentLife" value="10" min="1" max="30" step="1"><span class="tooltiptext">Ekipmanların faydalı ömrü</span></div>
+            <div class="form-group tooltip"><label><i class="fas fa-calendar-alt"></i> Ekipman Ekonomik Ömrü (Yıl)</label><input type="number" id="equipmentLife" value="10" min="1" max="30" step="1"><span class="tooltiptext">Ekipmanın kullanım ömrü</span></div>
         </div>
 
-        <!-- Kurulum Maliyetleri -->
-        <div class="section-title-sm">💰 Kurulum Maliyetleri (Tek Seferlik)</div>
+        <!-- Kuruluş maliyetleri -->
+        <div class="section-title-sm">💰 Kuruluş Maliyetleri (Tek seferlik)</div>
         <div class="form-row">
             <div class="form-group tooltip"><label><i class="fas fa-hammer"></i> Dekorasyon ve İnşaat Maliyeti</label><input type="number" id="constructionCost" value="50000" step="1000"></div>
             <div class="form-group tooltip"><label><i class="fas fa-file-signature"></i> Lisans ve Harçlar</label><input type="number" id="licensesCost" value="5000" step="500"></div>
@@ -619,9 +618,9 @@ tr:last-child td { border-bottom: none; }
         <div class="modal-body">
             <input type="text" id="calcDisplay" class="calc-display" readonly>
             <div class="calc-buttons">
-                <button class="calc-btn" data-val="9">9</button><button class="calc-btn" data-val="8">8</button><button class="calc-btn" data-val="7">7</button><button class="calc-btn operator" data-val="/">÷</button>
-                <button class="calc-btn" data-val="6">6</button><button class="calc-btn" data-val="5">5</button><button class="calc-btn" data-val="4">4</button><button class="calc-btn operator" data-val="*">×</button>
-                <button class="calc-btn" data-val="3">3</button><button class="calc-btn" data-val="2">2</button><button class="calc-btn" data-val="1">1</button><button class="calc-btn operator" data-val="-">-</button>
+                <button class="calc-btn" data-val="7">7</button><button class="calc-btn" data-val="8">8</button><button class="calc-btn" data-val="9">9</button><button class="calc-btn operator" data-val="/">÷</button>
+                <button class="calc-btn" data-val="4">4</button><button class="calc-btn" data-val="5">5</button><button class="calc-btn" data-val="6">6</button><button class="calc-btn operator" data-val="*">×</button>
+                <button class="calc-btn" data-val="1">1</button><button class="calc-btn" data-val="2">2</button><button class="calc-btn" data-val="3">3</button><button class="calc-btn operator" data-val="-">-</button>
                 <button class="calc-btn" data-val="C">C</button><button class="calc-btn" data-val="0">0</button><button class="calc-btn" data-val=".">.</button><button class="calc-btn operator" data-val="+">+</button>
                 <button class="calc-btn" data-val="⌫">⌫</button><button class="calc-btn equals" data-val="=" style="grid-column:span 3;">=</button>
             </div>
@@ -657,7 +656,7 @@ document.addEventListener('keydown', function(e) {
     else if (k === 'Escape') modalEl.classList.remove('active'); else if (k.toLowerCase() === 'c') handleCalc('C');
 });
 
-// ===== Ekipman dinamik =====
+// ===== Dinamik ekipman =====
 const equipmentContainer = document.getElementById('equipmentContainer');
 function addEquipmentRow(name = '', power = '', cost = '', space = '') {
     const row = document.createElement('div'); row.className = 'equipment-row';
@@ -692,7 +691,7 @@ function updatePowerAlert() {
     if (requiredAmps > electricalCapacity) {
         powerAlert.style.display = 'block';
         powerAlert.className = 'alert alert-danger';
-        powerAlert.innerHTML = `⚠️ Uyarı: Toplam gerekli güç (${requiredAmps.toFixed(0)} Amper) mekan kapasitesinden (${electricalCapacity} Amper) yüksek.`;
+        powerAlert.innerHTML = `⚠️ Uyarı: Toplam gerekli güç (${requiredAmps.toFixed(0)} Amper) mevcut kapasiteyi (${electricalCapacity} Amper) aşıyor.`;
     } else { powerAlert.style.display = 'none'; }
 }
 document.getElementById('electricalCapacity').addEventListener('input', updatePowerAlert);
@@ -755,19 +754,19 @@ function calculateAll() {
     const paybackMonths = (accountingProfit > 0) ? totalInvestment / accountingProfit : Infinity;
 
     const warnings = [];
-    if (seatDensity < 1.2) warnings.push("⚠️ Sandalye sayısı fazla, alan dar (yoğunluk yüksek)");
+    if (seatDensity < 1.2) warnings.push("⚠️ Sandalyeler fazla, alan dar (yüksek yoğunluk)");
     if (seats / employeesCount < 8) warnings.push("⚠️ Çalışan sayısı sandalye sayısına göre yüksek");
-    if (primePercent > 65) warnings.push("⚠️ Prime Cost yüksek (>65%)");
-    if (accountingProfit < 0) warnings.push("🔴 Mevcut tahminlerle proje zarar ediyor");
-    if (monthlyFixedCosts < monthlyRevenue * 0.15) warnings.push("⚠️ Sabit maliyetler çok düşük (<15% gelir)");
-    if (laborCostPercent < 15) warnings.push("⚠️ İşgücü maliyet oranı çok düşük (<15%)");
-    if (totalInvestment / seats > 5000) warnings.push("💡 Sandalye başı yatırım yüksek, bunun fizibilitesini kontrol edin");
+    if (primePercent > 65) warnings.push("⚠️ Prime Cost yüksek (>%65)");
+    if (accountingProfit < 0) warnings.push("🔴 Proje mevcut tahminlere göre zarar ediyor");
+    if (monthlyFixedCosts < monthlyRevenue * 0.15) warnings.push("⚠️ Sabit maliyetler çok düşük (<%15)");
+    if (laborCostPercent < 15) warnings.push("⚠️ İşgücü maliyet oranı çok düşük (<%15)");
+    if (totalInvestment / seats > 5000) warnings.push("💡 Sandalye başına yatırım yüksek, fizibiliteyi kontrol edin");
 
-    // Teknik puan
+    // Teknik değerlendirme
     let technicalScore = 0; const requiredAmps = (totalPower * 1000) / 220;
     if (electricalCapacity >= requiredAmps * 1.2) technicalScore += 40; else if (electricalCapacity >= requiredAmps) technicalScore += 30; else if (electricalCapacity >= requiredAmps * 0.8) technicalScore += 15; else technicalScore += 5;
-    if (waterAvailabilityText.includes('Uygun')) technicalScore += 15; else if (waterAvailabilityText.includes('Geliştirilmeli')) technicalScore += 5;
-    if (ventilationText.includes('Uygun')) technicalScore += 15; else if (ventilationText.includes('Geliştirilmeli')) technicalScore += 5;
+    if (waterAvailabilityText.includes('Uygun')) technicalScore += 15; else if (waterAvailabilityText.includes('Geliştirme')) technicalScore += 5;
+    if (ventilationText.includes('Uygun')) technicalScore += 15; else if (ventilationText.includes('Geliştirme')) technicalScore += 5;
     if (seatDensity >= 1.2 && seatDensity <= 1.8) technicalScore += 15; else if (seatDensity >= 1.0 && seatDensity < 1.2) technicalScore += 8; else if (seatDensity > 1.8 && seatDensity <= 2.2) technicalScore += 8;
     if (totalSpace <= kitchenArea * 0.5) technicalScore += 15; else if (totalSpace <= kitchenArea * 0.7) technicalScore += 8;
     technicalScore = Math.min(technicalScore, 100);
@@ -777,7 +776,7 @@ function calculateAll() {
     else if (technicalScore >= 50) { technicalRating = '🟠 Orta'; technicalColor = 'alert-warning'; }
     else { technicalRating = '🔴 Zayıf'; technicalColor = 'alert-danger'; }
 
-    // Finansal puan
+    // Finansal değerlendirme
     let financialScore = 0;
     if (primePercent <= 55) financialScore += 30; else if (primePercent <= 65) financialScore += 20; else if (primePercent <= 75) financialScore += 10;
     if (accountingProfit > 0) { const profitMargin = accountingProfit / monthlyRevenue; if (profitMargin >= 0.2) financialScore += 30; else if (profitMargin >= 0.1) financialScore += 20; else if (profitMargin >= 0.05) financialScore += 15; else financialScore += 10; }
@@ -796,7 +795,7 @@ function calculateAll() {
     document.getElementById('resultsSection').style.display = 'block';
     document.getElementById('kpiCards').innerHTML = `
         <div class="result-card"><i class="fas fa-dollar-sign"></i><h4>Aylık Gelir</h4><div class="value">${currency}${Math.round(monthlyRevenue)}</div></div>
-        <div class="result-card"><i class="fas fa-file-invoice"></i><h4>Net Kâr (Amortisman Sonrası)</h4><div class="value">${currency}${Math.round(accountingProfit)}</div><div class="status ${accountingProfit > 0 ? 'status-good' : 'status-bad'}">${accountingProfit > 0 ? 'Kârlı' : 'Zarar'}</div></div>
+        <div class="result-card"><i class="fas fa-file-invoice"></i><h4>Net Kâr (Amortisman sonrası)</h4><div class="value">${currency}${Math.round(accountingProfit)}</div><div class="status ${accountingProfit > 0 ? 'status-good' : 'status-bad'}">${accountingProfit > 0 ? 'Kârlı' : 'Zarar'}</div></div>
         <div class="result-card"><i class="fas fa-chart-line"></i><h4>Başabaş Geliri</h4><div class="value">${currency}${Math.round(breakEvenRevenue)}</div></div>
         <div class="result-card"><i class="fas fa-hand-holding-usd"></i><h4>Geri Ödeme Süresi</h4><div class="value">${paybackMonths === Infinity ? '∞' : paybackMonths.toFixed(1)}</div><div class="unit">ay</div></div>
     `;
@@ -846,16 +845,16 @@ function calculateAll() {
 document.getElementById('calculateBtn').addEventListener('click', calculateAll);
 
 // ================================================================
-// ========== Word Dışa Aktar (Profesyonel) ==========
+// ========== Profesyonel Word Dışa Aktar ==========
 // ================================================================
 async function exportToWord() {
-    if (document.getElementById('resultsSection').style.display === 'none') { alert('Lütfen önce analizi yapın.'); return; }
+    if (document.getElementById('resultsSection').style.display === 'none') { alert('Lütfen önce analiz yapın.'); return; }
     showLoading('Profesyonel Word raporu oluşturuluyor...', 'Veriler ve grafikler toplanıyor');
     try {
         const currency = document.getElementById('currencySelect').value;
         const companyName = document.getElementById('companyName').value || 'Yararlanıcı kurum';
         const res = window.lastResults;
-        if (!res) { alert('Lütfen önce analizi yapın.'); hideLoading(); return; }
+        if (!res) { alert('Lütfen önce analiz yapın.'); hideLoading(); return; }
 
         const chart1 = document.getElementById('financeChart');
         const chart2 = document.getElementById('riskChart');
@@ -911,15 +910,15 @@ async function exportToWord() {
         <body>
             <div class="cover">
                 <h1>FAROUK GRUP</h1>
-                <h2>Gelişmiş Restoran Teknik Fizibilite Raporu</h2>
+                <h2>Restoranlar için İleri Teknik Fizibilite Raporu</h2>
                 <p>Kurum: ${companyName} | Tarih: ${dateStr}</p>
                 <p>Para Birimi: ${currency}</p>
             </div>
             <h2 style="color:#b8860b;">Temel Girdiler</h2>
             <table>
-                <tr><th>Mutfak Tipi</th><td>${kitchenType}</td><th>Sandalye Sayısı</th><td>${res.seats}</td></tr>
+                <tr><th>Mutfak Türü</th><td>${kitchenType}</td><th>Sandalye Sayısı</th><td>${res.seats}</td></tr>
                 <tr><th>Hizmet Modeli</th><td>${serviceModel}</td><th>Çalışma Saati</th><td>${res.hoursOpen} saat/gün</td></tr>
-                <tr><th>Vardiya Sayısı</th><td>${shifts}</td><th>Toplam Alan</th><td>${res.totalArea} m²</td></tr>
+                <tr><th>Çalışma Periyotları</th><td>${shifts}</td><th>Toplam Alan</th><td>${res.totalArea} m²</td></tr>
                 <tr><th>Mutfak Oranı</th><td>${res.kitchenPercent}%</td><th>Elektrik Kapasitesi</th><td>${res.electricalCapacity} Amper</td></tr>
                 <tr><th>Su</th><td>${water}</td><th>Havalandırma</th><td>${ventilation}</td></tr>
                 <tr><th>Teslimat Kolaylığı</th><td>${delivery}</td><th></th><td></td></tr>
@@ -949,10 +948,10 @@ async function exportToWord() {
 }
 
 // ================================================================
-// ========== Excel Dışa Aktar (Profesyonel) ==========
+// ========== Profesyonel Excel Dışa Aktar ==========
 // ================================================================
 async function exportToFullExcel() {
-    if (!window.lastResults) { alert('Lütfen önce analizi yapın (Teknik Çalışmayı Hesapla).'); return; }
+    if (!window.lastResults) { alert('Lütfen önce analiz yapın ("Teknik Çalışmayı Hesapla").'); return; }
     showLoading('Profesyonel Excel raporu oluşturuluyor...', 'Sayfalar ve grafikler oluşturuluyor');
     try {
         const res = window.lastResults;
@@ -977,8 +976,8 @@ async function exportToFullExcel() {
         cv.mergeCells(2,1,2,4); const bc=cv.getCell(2,1);
         bc.value='FAROUK GRUP\nDanışmanlık ve İşletme';
         bc.font={name:'Arial',bold:true,size:28,color:{argb:GL}}; bc.fill={type:'pattern',pattern:'solid',fgColor:{argb:DB}}; bc.alignment={horizontal:'center',vertical:'middle',wrapText:true,readingOrder:'rtl'};
-        mh(cv,1,4,4,`Teknik Fizibilite Raporu\n${companyName}`,DB,GL,18);
-        const inf=[['📋 Kurum',companyName],['📅 Tarih',new Date().toLocaleDateString('tr-TR')],['💰 Para Birimi',currency],['📊 Net Kâr',`${currency} ${res.accountingProfit.toFixed(0)}`],['📈 Geri Ödeme',res.paybackMonths===Infinity?'Tanımsız':`${res.paybackMonths.toFixed(1)} ay`]];
+        mh(cv,1,4,4,`Restoran Teknik Fizibilite Raporu\n${companyName}`,DB,GL,18);
+        const inf=[['📋 Kurum',companyName],['📅 Tarih',new Date().toLocaleDateString('tr-TR')],['💰 Para Birimi',currency],['📊 Net Kâr',`${currency} ${res.accountingProfit.toFixed(0)}`],['📈 Geri Ödeme',res.paybackMonths===Infinity?'Süresiz':`${res.paybackMonths.toFixed(1)} ay`]];
         let ir=6;
         inf.forEach(([l,v],idx)=>{
             cv.mergeCells(ir,1,ir,2); cv.mergeCells(ir,3,ir,4);
@@ -992,16 +991,16 @@ async function exportToFullExcel() {
         // 2. Girdiler
         const inputsSheet = workbook.addWorksheet('Girdiler ve Varsayımlar', { views: [{ rightToLeft: true, showGridLines: false }] });
         inputsSheet.getColumn(1).width=5; inputsSheet.getColumn(2).width=38; inputsSheet.getColumn(3).width=22; inputsSheet.getColumn(4).width=22; inputsSheet.getColumn(5).width=5;
-        mh(inputsSheet,1,5,1,'📋 Temel Girdiler ve Varsayımlar',DB,GL,14);
+        mh(inputsSheet,1,5,1,'📋 Temel Girdiler',DB,GL,14);
         inputsSheet.getRow(1).height=40;
         mh(inputsSheet,2,4,2,'Proje Verileri',SB,'FFFFFFFF',11);
         inputsSheet.getRow(2).height=28;
         const inputFields = [
-            ['Mutfak Tipi', document.getElementById('kitchenType').options[document.getElementById('kitchenType').selectedIndex].text, ''],
+            ['Mutfak Türü', document.getElementById('kitchenType').options[document.getElementById('kitchenType').selectedIndex].text, ''],
             ['Sandalye Sayısı', res.seats, ''],
             ['Hizmet Modeli', document.getElementById('serviceModel').options[document.getElementById('serviceModel').selectedIndex].text, ''],
-            ['Çalışma Saati', res.hoursOpen, 'saat'],
-            ['Vardiya Sayısı', document.getElementById('shifts').options[document.getElementById('shifts').selectedIndex].text, ''],
+            ['Günlük Çalışma Saati', res.hoursOpen, 'saat'],
+            ['Çalışma Periyotları', document.getElementById('shifts').options[document.getElementById('shifts').selectedIndex].text, ''],
             ['Toplam Alan', res.totalArea, 'm²'],
             ['Mutfak Oranı', res.kitchenPercent, '%'],
             ['Elektrik Kapasitesi', res.electricalCapacity, 'Amper'],
@@ -1020,10 +1019,10 @@ async function exportToFullExcel() {
             ['Çalışan Sayısı', res.employeesCount, ''],
             ['Ortalama Maaş', `${currency} ${res.avgSalary}`, ''],
             ['Aylık Kira', `${currency} ${res.monthlyRent}`, ''],
-            ['Diğer Faaliyet Giderleri', `${currency} ${res.otherOpCost}`, ''],
+            ['Diğer Giderler', `${currency} ${res.otherOpCost}`, ''],
             ['Ekipman Ömrü', res.equipmentLife, 'yıl'],
             ['Dekorasyon Maliyeti', `${currency} ${res.constructionCost}`, ''],
-            ['Lisans ve Harçlar', `${currency} ${res.licensesCost}`, ''],
+            ['Lisanslar', `${currency} ${res.licensesCost}`, ''],
             ['İşletme Sermayesi', `${currency} ${res.workingCapital}`, '']
         ];
         let iRow=3;
@@ -1038,7 +1037,7 @@ async function exportToFullExcel() {
             iRow++;
         });
 
-        // 3. Performans Göstergeleri
+        // 3. Göstergeler
         const kpiSheet = workbook.addWorksheet('Performans Göstergeleri', { views: [{ rightToLeft: true, showGridLines: false }] });
         [5,32,22,22,22,5].forEach((w,i)=>kpiSheet.getColumn(i+1).width=w);
         mh(kpiSheet,1,6,1,'📊 Performans Göstergeleri',DB,GL,15);
@@ -1049,7 +1048,7 @@ async function exportToFullExcel() {
             { label: 'Aylık Gelir', value: `${currency} ${Math.round(res.monthlyRevenue)}`, good: true },
             { label: 'Net Kâr', value: `${currency} ${Math.round(res.accountingProfit)}`, good: res.accountingProfit>0 },
             { label: 'Başabaş Geliri', value: `${currency} ${Math.round(res.breakEvenRevenue)}`, good: true },
-            { label: 'Geri Ödeme', value: res.paybackMonths===Infinity?'Tanımsız':`${res.paybackMonths.toFixed(1)} ay`, good: res.paybackMonths<24 },
+            { label: 'Geri Ödeme', value: res.paybackMonths===Infinity?'Süresiz':`${res.paybackMonths.toFixed(1)} ay`, good: res.paybackMonths<24 },
             { label: 'Prime Cost', value: `${res.primePercent.toFixed(1)}%`, good: res.primePercent<65 },
             { label: 'Kâr Marjı', value: `${((res.accountingProfit/res.monthlyRevenue)*100).toFixed(1)}%`, good: res.accountingProfit>0 }
         ];
@@ -1071,24 +1070,24 @@ async function exportToFullExcel() {
         kRow++;
         kpiSheet.mergeCells(kRow,2,kRow,5);
         const kFinal=kpiSheet.getCell(kRow,2);
-        kFinal.value=res.accountingProfit>0?'✅ Proje finansal olarak uygundur (kâr pozitif)':'⚠️ Proje uygun değildir (zarar)';
+        kFinal.value=res.accountingProfit>0?'✅ Proje Finansal Olarak Uygun (Pozitif Kâr)':'⚠️ Proje Uygun Değil (Zarar)';
         kFinal.font={name:'Arial',bold:true,size:13,color:{argb:res.accountingProfit>0?PT:'856404'}};
         kFinal.fill={type:'pattern',pattern:'solid',fgColor:{argb:res.accountingProfit>0?PB:GB}};
         kFinal.alignment={horizontal:'center',vertical:'middle',readingOrder:'rtl'};
         kFinal.border={top:{style:'medium',color:{argb:G}},bottom:{style:'medium',color:{argb:G}},left:{style:'medium',color:{argb:G}},right:{style:'medium',color:{argb:G}}};
         kpiSheet.getRow(kRow).height=40;
 
-        // 4. Finansal Özet
+        // 4. Özet
         const summarySheet = workbook.addWorksheet('Finansal Özet', { views: [{ rightToLeft: true, showGridLines: false }] });
         summarySheet.getColumn(1).width=5; summarySheet.getColumn(2).width=35; summarySheet.getColumn(3).width=25; summarySheet.getColumn(4).width=25; summarySheet.getColumn(5).width=5;
         mh(summarySheet,1,5,1,'📋 Finansal ve Teknik Özet',DB,GL,14);
         summarySheet.getRow(1).height=40;
         const summData = [
-            ['Toplam Yatırım', `${currency} ${res.totalInvestment.toFixed(0)}`, '', ''],
-            ['Aylık Gelir', `${currency} ${res.monthlyRevenue.toFixed(0)}`, 'Teknik Puan', `${res.technicalScore}/100 (${res.technicalRating})`],
-            ['Toplam Giderler', `${currency} ${res.totalMonthlyExpenses.toFixed(0)}`, 'Finansal Puan', `${res.financialScore}/100 (${res.financialRating})`],
-            ['Net Kâr', `${currency} ${res.accountingProfit.toFixed(0)}`, 'Başabaş Geliri', `${currency} ${res.breakEvenRevenue.toFixed(0)}`],
-            ['Geri Ödeme', res.paybackMonths===Infinity?'Tanımsız':`${res.paybackMonths.toFixed(1)} ay`, 'Güvenlik Marjı', `${((res.monthlyRevenue - res.breakEvenRevenue) / res.monthlyRevenue * 100).toFixed(1)}%`]
+            ['Toplam Yatırım', `${currency} ${res.totalInvestment.toFixed(0)}`, 'Teknik Puan', `${res.technicalScore}/100 (${res.technicalRating})`],
+            ['Aylık Gelir', `${currency} ${res.monthlyRevenue.toFixed(0)}`, 'Finansal Puan', `${res.financialScore}/100 (${res.financialRating})`],
+            ['Toplam Gider', `${currency} ${res.totalMonthlyExpenses.toFixed(0)}`, 'Başabaş Noktası', `${currency} ${res.breakEvenRevenue.toFixed(0)}`],
+            ['Net Kâr', `${currency} ${res.accountingProfit.toFixed(0)}`, 'Güvenlik Marjı', `${((res.monthlyRevenue - res.breakEvenRevenue) / res.monthlyRevenue * 100).toFixed(1)}%`],
+            ['Geri Ödeme', res.paybackMonths===Infinity?'Süresiz':`${res.paybackMonths.toFixed(1)} ay`, '', '']
         ];
         let sRow=2;
         summData.forEach(([l1,v1,l2,v2],idx)=>{
@@ -1101,7 +1100,7 @@ async function exportToFullExcel() {
             sRow++;
         });
 
-        // 5. Grafikler
+        // 5. Grafik
         const chartsSheet = workbook.addWorksheet('Grafikler', { views: [{ rightToLeft: true, showGridLines: false }] });
         chartsSheet.getColumn(1).width=5; chartsSheet.getColumn(2).width=50; chartsSheet.getColumn(3).width=5;
         mh(chartsSheet,1,3,1,'📊 Proje Grafikleri',DB,GL,14);
@@ -1125,11 +1124,11 @@ async function exportToFullExcel() {
         evalSheet.getColumn(1).width=5; evalSheet.getColumn(2).width=50; evalSheet.getColumn(3).width=5;
         mh(evalSheet,1,3,1,'📝 Değerlendirme ve Öneriler',DB,GL,14);
         evalSheet.getRow(1).height=45;
-        const warningsText = res.warnings && res.warnings.length ? res.warnings.join('\n') : 'Uyarı yok.';
+        const warningsText = res.warnings && res.warnings.length ? res.warnings.join('\n') : 'Henüz uyarı yok.';
         const sections = [
             { title: '1. Teknik ve Finansal Değerlendirme', content: `Teknik Puan: ${res.technicalScore}/100 (${res.technicalRating})\nFinansal Puan: ${res.financialScore}/100 (${res.financialRating})` },
             { title: '2. Uyarılar', content: warningsText },
-            { title: '3. Öneriler', content: res.accountingProfit>0 ? '• Proje teknik ve finansal olarak uygundur, ilerlenmesi önerilir.\n• Prime Cost'u izleyerek kârlılığı koruyun.\n• Gerekli işletme sermayesini ayırın.' : '• Proje mevcut haliyle uygun değildir.\n• Maliyetleri azaltmayı veya gelirleri artırmayı araştırın.\n• Varsayımları (doluluk, fiyat, maliyetler) yeniden değerlendirin.' },
+            { title: '3. Öneriler', content: res.accountingProfit>0 ? '• Proje teknik ve finansal olarak uygundur, ilerlenmesi önerilir.\n• Prime Cost\'u izleyerek kârlılığı koruyun.\n• Gerekli işletme sermayesini ayırın.' : '• Proje mevcut haliyle uygun değildir.\n• Maliyetleri düşürmenin veya gelirleri artırmanın yollarını araştırın.\n• Varsayımları (doluluk, fiyatlar, maliyetler) yeniden değerlendirin.' },
             { title: '4. Uyarı', content: 'Bu analiz tahmini varsayımlara dayanmaktadır. Gerçek sonuçlar farklı olabilir. Finansal ve teknik uzmana danışmanız önerilir.' }
         ];
         let itRow=2;
@@ -1162,7 +1161,7 @@ async function exportToFullExcel() {
     } catch(err) { console.error(err); alert('Excel hatası: ' + err.message); } finally { hideLoading(); }
 }
 
-// ===== Yükleme fonksiyonları =====
+// ===== Yükleme ekranı =====
 function showLoading(title, msg) {
     document.getElementById('loadingTitle').textContent = title;
     document.getElementById('loadingMsg').textContent = msg;
@@ -1172,7 +1171,7 @@ function hideLoading() {
     document.getElementById('exportLoading').classList.remove('show');
 }
 
-// Yükleme elementi
+// Yükleme ekranı yoksa oluştur
 if (!document.getElementById('exportLoading')) {
     const loadDiv = document.createElement('div');
     loadDiv.className = 'export-loading';

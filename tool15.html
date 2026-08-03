@@ -2,1891 +2,501 @@
 <html lang="tr" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes">
-    <title>Gelişmiş SOP Denetim Sistemi - Risk Analizi ve Öneriler | FAROUK GRUP</title>
-    <!-- Sayfa koruması -->
-    <script src="auth-check.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Gelişmiş SOP Denetim Sistemi | FAROUK GRUP</title>
+<!-- Sayfa koruması -->
+<script src="auth-check.js"></script>
     <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
-    <!-- AOS Library -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
+    <!-- html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- ExcelJS & FileSaver -->
+    <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* ===== RESET & BASE ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            width: 100%; max-width: 100vw; overflow-x: hidden;
+            font-family: 'Tajawal', sans-serif;
+            background: #0b0e17; color: #f0f4fa; line-height: 1.6;
+            -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+            padding-bottom: 140px !important;
         }
 
-        :root {
-            --bg-dark: #0b0e17;
-            --bg-panel: rgba(18, 24, 36, 0.85);
-            --bg-card: rgba(22, 30, 46, 0.8);
-            --border-light: rgba(180, 133, 84, 0.25);
-            --accent-glow: #b48554;
-            --accent-soft: #cfa776;
-            --text-light: #f0f4fa;
-            --text-muted: #aab7d4;
-            --shadow-soft: 0 15px 35px -10px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(180, 133, 84, 0.15);
-            --shadow-glow: 0 15px 35px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(180, 133, 84, 0.3);
-            --radius-md: 20px;
-            --radius-lg: 30px;
-            --transition: all 0.3s ease;
-            --gold: #b8860b;
-            --gold-light: #d4b15a;
-            --gold-soft: rgba(184,134,11,0.1);
-            --dark: #0f0f0f;
-            --dark-light: #1a1a1a;
-            --white: #ffffff;
-            --offwhite: #f9f9f9;
-            --text-dark: #333;
-            --risk-high: #dc3545;
-            --risk-medium: #ffc107;
-            --risk-low: #28a745;
+        /* ===== Titreşim önleyici ===== */
+        .sop-card, .result-card, .container, .checklist-section,
+        .checklist-item, .item-row, .btn-primary, .btn-secondary,
+        .btn-export, .currency-row, .calc-floating-btn, .home-floating-btn,
+        .featured-badge, .glow-bg, .floating-shape, .result-area,
+        .info-item input, .signature-item input, .notes-field textarea {
+            transform: none !important;
+            -webkit-transform: none !important;
+            will-change: auto !important;
+            backface-visibility: visible !important;
+            -webkit-backface-visibility: visible !important;
+            animation: none !important;
+            transition: none !important;
         }
 
-        body {
-            font-family: 'Inter', 'Nunito', sans-serif;
-            background: radial-gradient(circle at 70% 30%, #141c2b, #0a0e16);
-            color: var(--text-light);
-            line-height: 1.6;
-            min-height: 100vh;
-            position: relative;
-        }
-
-        /* Parıltılı arka plan */
+        /* ===== Sabit arka plan ===== */
         .glow-bg {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 0;
+            position: fixed; width: 100%; height: 100%; top: 0; left: 0;
+            pointer-events: none; z-index: 0; overflow: hidden;
         }
         .glow-bg span {
             position: absolute;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(180,133,84,0.15) 0%, transparent 70%);
             border-radius: 50%;
             filter: blur(80px);
-            animation: glowMove 20s infinite alternate ease-in-out;
+            opacity: 0.20;
+            background: radial-gradient(circle, rgba(180, 133, 84, 0.10) 0%, transparent 70%);
         }
-        .glow-bg span:nth-child(1) { top: -100px; right: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(180,133,84,0.12) 0%, transparent 70%); }
-        .glow-bg span:nth-child(2) { bottom: -150px; left: -150px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(100,150,200,0.1) 0%, transparent 70%); }
-        .glow-bg span:nth-child(3) { top: 30%; left: 30%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(180,133,84,0.1) 0%, transparent 70%); animation-delay: -5s; }
+        .glow-bg span:nth-child(1) { top: -100px; right: -100px; width: 500px; height: 500px; }
+        .glow-bg span:nth-child(2) { bottom: -150px; left: -150px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(100,150,200,0.05) 0%, transparent 70%); }
+        .glow-bg span:nth-child(3) { top: 30%; left: 30%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(180,133,84,0.06) 0%, transparent 70%); }
+        .floating-shape { display: none; }
 
-        @keyframes glowMove {
-            0% { transform: translate(0, 0) scale(1); opacity: 0.5; }
-            100% { transform: translate(40px, -30px) scale(1.2); opacity: 0.8; }
-        }
-
-        .floating-shape {
-            position: absolute;
-            width: 300px; height: 300px; border-radius: 50%;
-            background: radial-gradient(circle, rgba(184,134,11,0.1) 0%, transparent 70%);
-            z-index: 0; pointer-events: none;
-        }
-
-        .shape-1 { top: -100px; right: -100px; animation: float 20s infinite ease-in-out; }
-        .shape-2 { bottom: -50px; left: -50px; width: 200px; height: 200px; animation: float 15s infinite ease-in-out reverse; }
-
-        @keyframes float {
-            0% { transform: translate(0,0) rotate(0deg); }
-            33% { transform: translate(30px,-30px) rotate(5deg); }
-            66% { transform: translate(-20px,20px) rotate(-5deg); }
-            100% { transform: translate(0,0) rotate(0deg); }
-        }
-
+        /* ===== HERO ===== */
         .hero-mini {
-            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-light) 100%);
-            color: white;
-            text-align: center;
-            padding: 2.5rem 1rem;
-            border-bottom: 4px solid var(--gold);
-            position: relative;
-            overflow: hidden;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            color: white; text-align: center; padding: 3rem 1rem;
+            border-bottom: 4px solid #b8860b; position: relative; z-index: 1;
         }
-
-        .hero-mini::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(184,134,11,0.2) 0%, transparent 60%);
-            animation: rotate 40s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
         .hero-mini h2 {
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: var(--gold-light);
-            margin-bottom: 0.5rem;
-            position: relative;
-            z-index: 2;
+            font-size: 2.5rem; font-weight: 900; color: #d4b15a;
+            margin-bottom: 0.5rem; text-shadow: 0 2px 8px rgba(0,0,0,0.5);
         }
-
         .hero-mini p {
-            font-size: 1.1rem;
-            max-width: 700px;
-            margin: 0 auto;
-            opacity: 0.95;
-            position: relative;
-            z-index: 2;
+            font-size: 1.2rem; max-width: 700px; margin: 0 auto;
+            opacity: 0.95; padding: 0 0.5rem;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-            position: relative;
-            z-index: 2;
-        }
+        /* ===== CONTAINER ===== */
+        .container { max-width: 1050px; margin: 2rem auto; padding: 0 1rem; position: relative; z-index: 2; }
 
-        /* Ana kart */
+        /* ===== CARD ===== */
         .sop-card {
-            background: var(--bg-panel);
-            backdrop-filter: blur(15px);
-            border: 2px solid var(--border-light);
-            border-radius: var(--radius-lg);
-            padding: 1.8rem;
-            box-shadow: var(--shadow-soft);
-            position: relative;
-            overflow: hidden;
+            background: rgba(18,24,36,0.92); border: 2px solid rgba(180,133,84,0.2);
+            border-radius: 30px; padding: 1.5rem;
+            box-shadow: 0 15px 35px -10px rgba(0,0,0,0.6);
+            position: relative; overflow: hidden;
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
         }
+        .sop-card h2 { font-size: 1.8rem; font-weight: 900; color: #cfa776; text-align: center; margin-bottom: 1.5rem; padding-top: 0.3rem; border-bottom: 2px solid rgba(180,133,84,0.15); padding-bottom: 0.5rem; }
+        .sop-card h2 i { color: #cfa776; margin-left: 0.4rem; }
+        .featured-badge { display: none; position: absolute; top: -10px; left: -10px; background: linear-gradient(135deg, #b48554, #d4b15a); color: #111; width: 90px; height: 90px; border-radius: 50%; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 5px 20px rgba(0,0,0,0.3); font-weight: 900; border: 3px solid white; z-index: 10; }
+        .featured-badge i { font-size: 1.8rem; margin-bottom: 0.2rem; color: #0b0e17; }
+        .featured-badge span { font-size: 0.8rem; text-align: center; color: #0b0e17; }
 
-        .sop-card:hover {
-            box-shadow: var(--shadow-glow);
-            border-color: rgba(180,133,84,0.4);
-        }
+        /* ===== Info & Signature ===== */
+        .info-row, .signature-row { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .info-item, .signature-item { flex: 1 1 200px; }
+        .info-item label, .signature-item label { display: block; font-weight: 700; color: #cfa776; font-size: 0.85rem; margin-bottom: 0.3rem; }
+        .info-item input, .signature-item input { width: 100%; padding: 0.6rem 0.8rem; border: 2px solid rgba(180,133,84,0.2); border-radius: 30px; background: rgba(10,14,23,0.6); color: #f0f4fa; font-size: 0.9rem; font-family: 'Tajawal', sans-serif; }
+        .info-item input:focus, .signature-item input:focus { outline: none; border-color: #b48554; box-shadow: 0 0 0 3px rgba(180,133,84,0.15); }
+        .signature-row { background: rgba(180,133,84,0.08); border: 1px solid rgba(180,133,84,0.12); padding: 0.8rem 1rem; border-radius: 24px; }
 
-        .sop-card h2 {
-            font-size: 1.8rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #f0e6d2, #cfa776);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1.5rem;
-            text-align: center;
-            border-bottom: 2px solid var(--border-light);
-            padding-bottom: 0.5rem;
-        }
+        /* ===== Checklist Sections ===== */
+        .checklist-section { background: rgba(22,30,46,0.5); border: 1px solid rgba(180,133,84,0.1); border-radius: 20px; padding: 1rem; margin-bottom: 1.2rem; }
+        .section-title { color: #cfa776; font-weight: 900; font-size: 1.2rem; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px dashed rgba(180,133,84,0.1); padding-bottom: 0.4rem; }
+        .section-title i { color: #cfa776; }
+        .checklist-item { margin-bottom: 0.8rem; border-bottom: 1px solid rgba(180,133,84,0.06); padding-bottom: 0.6rem; }
+        .checklist-item:last-child { border-bottom: none; margin-bottom: 0; }
+        .item-row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+        .item-row input[type="checkbox"] { width: 20px; height: 20px; accent-color: #b48554; cursor: pointer; flex-shrink: 0; }
+        .item-row label { font-weight: 700; color: #f0f4fa; cursor: pointer; flex: 1; font-size: 0.9rem; }
+        .risk-badge { display: inline-block; padding: 0.15rem 0.6rem; border-radius: 50px; font-size: 0.7rem; font-weight: 700; white-space: nowrap; }
+        .risk-high { background: #dc3545; color: white; }
+        .risk-medium { background: #ffc107; color: #111; }
+        .risk-low { background: #28a745; color: white; }
+        .notes-field { margin-top: 0.3rem; margin-right: 2.2rem; width: calc(100% - 2.2rem); }
+        .notes-field textarea { width: 100%; padding: 0.4rem 0.6rem; border: 1px solid rgba(180,133,84,0.15); border-radius: 14px; background: rgba(10,14,23,0.4); color: #f0f4fa; font-family: 'Tajawal', sans-serif; resize: vertical; min-height: 40px; font-size: 0.8rem; }
+        .notes-field textarea:focus { outline: none; border-color: #b48554; box-shadow: 0 0 0 2px rgba(180,133,84,0.1); }
+        .recommendation-box { margin-top: 0.3rem; margin-right: 2.2rem; padding: 0.5rem 0.8rem; border-radius: 14px; background: rgba(255,193,7,0.10); border: 1px solid rgba(255,193,7,0.2); color: #fbbf24; font-size: 0.8rem; display: none; }
+        .recommendation-box strong { display: block; margin-bottom: 0.2rem; }
 
-        .info-row {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            margin-bottom: 2rem;
-        }
-        .info-item {
-            flex: 1 1 250px;
-        }
-        .info-item label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-            color: var(--accent-soft);
-        }
-        .info-item input {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: 2px solid var(--border-light);
-            border-radius: 30px;
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            background: rgba(10,14,23,0.7);
-            color: var(--text-light);
-            transition: var(--transition);
-        }
-        .info-item input:focus {
-            outline: none;
-            border-color: var(--accent-glow);
-            box-shadow: 0 0 0 3px rgba(180,133,84,0.2);
-        }
+        /* ===== Result Area ===== */
+        .result-area { margin: 1.5rem 0; padding: 1.2rem; background: rgba(180,133,84,0.10); border: 1px solid rgba(180,133,84,0.2); border-radius: 24px; display: none; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+        .score { font-size: 2rem; font-weight: 900; color: #cfa776; }
+        .evaluation { font-size: 1.1rem; font-weight: 700; color: #aab7d4; }
+        .overall-risk { font-size: 1.2rem; font-weight: 900; padding: 0.4rem 1.2rem; border-radius: 50px; }
+        .risk-level-low { background: #28a745; color: white; }
+        .risk-level-medium { background: #ffc107; color: #111; }
+        .risk-level-high { background: #dc3545; color: white; }
 
-        .signature-row {
-            display: flex;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-            background: rgba(180,133,84,0.15);
-            padding: 1.5rem;
-            border-radius: 30px;
-        }
-        .signature-item {
-            flex: 1;
-        }
-        .signature-item label {
-            font-weight: 700;
-            color: var(--accent-soft);
-            display: block;
-            margin-bottom: 0.3rem;
-        }
-        .signature-item input {
-            width: 100%;
-            padding: 0.8rem;
-            border: 2px solid var(--border-light);
-            border-radius: 30px;
-            background: rgba(10,14,23,0.7);
-            color: var(--text-light);
-        }
+        /* ===== Buttons ===== */
+        .btn-group { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 1rem; }
+        .btn-primary, .btn-secondary { background: rgba(180,133,84,0.15); border: 1px solid rgba(180,133,84,0.2); color: #cfa776; border-radius: 50px; padding: 0.8rem 1.8rem; font-weight: 700; font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.6rem; font-family: 'Tajawal', sans-serif; flex: 1 1 auto; justify-content: center; }
+        .btn-primary:hover, .btn-secondary:hover { background: rgba(180,133,84,0.3); color: #fff; border-color: #b48554; }
+        .btn-secondary { background: rgba(30,74,122,0.15); border-color: #1e4a7a; color: #8ab8ff; }
+        .btn-secondary:hover { background: rgba(30,74,122,0.3); }
+        .export-container { display: flex; justify-content: center; gap: 0.8rem; flex-wrap: wrap; margin: 1.5rem 0; }
+        .export-btn, .export-word-btn { background: rgba(180,133,84,0.10); border: 1px solid rgba(180,133,84,0.15); border-radius: 40px; padding: 0.7rem 1.5rem; color: #cfa776; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; font-family: 'Tajawal', sans-serif; flex: 1 1 auto; justify-content: center; max-width: 220px; }
+        .export-btn:hover, .export-word-btn:hover { background: rgba(180,133,84,0.25); }
+        .export-btn.excel { background: rgba(40,167,69,0.12); border-color: #28a745; color: #6fbf6f; }
+        .export-btn.excel:hover { background: rgba(40,167,69,0.25); }
 
-        .checklist-section {
-            margin-bottom: 2rem;
-            border: 2px solid var(--border-light);
-            border-radius: var(--radius-lg);
-            padding: 1.5rem;
-        }
-        .section-title {
-            color: var(--accent-soft);
-            font-weight: 900;
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .checklist-item {
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid var(--border-light);
-            padding-bottom: 1rem;
-        }
-        .item-row {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-        }
-        .item-row input[type="checkbox"] {
-            width: 22px;
-            height: 22px;
-            accent-color: var(--gold);
-            cursor: pointer;
-        }
-        .item-row label {
-            font-weight: 700;
-            color: var(--text-light);
-            cursor: pointer;
-            flex: 1;
-        }
-        .risk-badge {
-            display: inline-block;
-            padding: 0.2rem 0.8rem;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #111;
-        }
-        .risk-high { background: var(--risk-high); color: white; }
-        .risk-medium { background: var(--risk-medium); }
-        .risk-low { background: var(--risk-low); color: white; }
+        /* ===== Loading & Footer ===== */
+        .export-loading { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(4px); }
+        .export-loading.show { display: flex; }
+        .export-loading-box { background: rgba(18,24,36,0.95); border: 1px solid rgba(180,133,84,0.2); border-radius: 20px; padding: 1.8rem 2rem; text-align: center; max-width: 85vw; }
+        .export-loading-box i { font-size: 2.5rem; color: #cfa776; animation: spin 0.8s linear infinite; display: block; margin-bottom: 0.6rem; }
+        .export-loading-box h3 { color: #cfa776; font-size: 1.1rem; margin-bottom: 0.3rem; }
+        .export-loading-box p { color: #aab7d4; font-size: 0.9rem; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .footer-simple { text-align: center; padding: 1rem; margin-top: 1.5rem; background: rgba(10,14,23,0.4); border-top: 1px solid rgba(180,133,84,0.08); color: #aab7d4; font-size: 0.8rem; }
+        .footer-simple span { color: #cfa776; font-weight: 700; }
 
-        .notes-field {
-            margin-top: 0.5rem;
-            margin-left: 2.2rem; /* LTR */
-            width: calc(100% - 2.2rem);
-        }
-        .notes-field textarea {
-            width: 100%;
-            padding: 0.5rem;
-            border: 2px solid var(--border-light);
-            border-radius: 15px;
-            background: rgba(10,14,23,0.7);
-            color: var(--text-light);
-            resize: vertical;
-            min-height: 60px;
-            font-family: 'Inter', sans-serif;
-        }
+        /* ===== Modal & Floating ===== */
+        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px); align-items: center; justify-content: center; }
+        .modal.active { display: flex; }
+        .modal-content { background: rgba(18,24,36,0.96); border: 1px solid rgba(180,133,84,0.2); border-radius: 24px; width: 92%; max-width: 360px; box-shadow: 0 20px 50px rgba(0,0,0,0.6); overflow: hidden; }
+        .modal-header { background: rgba(180,133,84,0.10); border-bottom: 1px solid rgba(180,133,84,0.10); padding: 0.7rem 1.2rem; display: flex; align-items: center; justify-content: space-between; }
+        .modal-header h2 { margin: 0; color: #cfa776; font-size: 1rem; font-weight: 900; }
+        .modal-header .close { color: #aab7d4; font-size: 1.6rem; font-weight: bold; cursor: pointer; line-height: 1; }
+        .modal-header .close:hover { color: #cfa776; }
+        .modal-body { padding: 1rem; }
+        .calc-display { width: 100%; height: 42px; font-size: 1.2rem; text-align: left; padding: 0 12px; border: 1px solid rgba(180,133,84,0.15); border-radius: 16px; margin-bottom: 12px; background: rgba(10,14,23,0.7); color: #cfa776; font-family: 'Courier New', monospace; direction: ltr; }
+        .calc-buttons { display: grid; grid-template-columns: repeat(4,1fr); gap: 5px; }
+        .calc-btn { background: rgba(180,133,84,0.08); border: 1px solid rgba(180,133,84,0.08); border-radius: 14px; padding: 10px 0; font-size: 1rem; font-weight: 700; color: #f0f4fa; cursor: pointer; font-family: 'Tajawal', sans-serif; }
+        .calc-btn:hover { background: rgba(180,133,84,0.20); }
+        .calc-btn.operator { color: #cfa776; }
+        .calc-btn.equals { background: rgba(180,133,84,0.25); color: white; grid-column: span 2; }
+        .calc-btn.equals:hover { background: rgba(180,133,84,0.45); }
+        .calc-floating-btn, .home-floating-btn { position: fixed !important; top: auto !important; bottom: 25px !important; z-index: 9998 !important; margin: 0 !important; transform: none !important; -webkit-transform: none !important; pointer-events: auto !important; font-family: 'Tajawal', sans-serif; border: none !important; border-radius: 50px !important; box-shadow: 0 4px 20px rgba(0,0,0,0.5) !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; padding: 12px 20px !important; font-size: 1rem !important; font-weight: 700 !important; }
+        .calc-floating-btn { left: 20px !important; right: auto !important; background: #b48554 !important; color: #111 !important; }
+        .home-floating-btn { right: 20px !important; left: auto !important; background: #b48554 !important; color: #fff !important; text-decoration: none !important; }
+        .calc-floating-btn:hover, .home-floating-btn:hover { opacity: 0.9 !important; }
+        .calc-floating-btn:active, .home-floating-btn:active { opacity: 0.7 !important; transform: scale(0.95) !important; }
 
-        .recommendation-box {
-            margin-top: 0.5rem;
-            margin-left: 2.2rem;
-            padding: 0.8rem;
-            border-radius: 15px;
-            background: rgba(255, 193, 7, 0.2);
-            border: 1px solid var(--warning);
-            color: #ffd966;
-            font-size: 0.9rem;
-        }
-        .recommendation-box strong {
-            display: block;
-            margin-bottom: 0.3rem;
-        }
+        #initialMessage { margin-top: 0.5rem; color: var(--text-muted); text-align: center; font-size: 0.9rem; }
+        .no-select { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: rgba(10,14,23,0.3); }
+        ::-webkit-scrollbar-thumb { background: rgba(180,133,84,0.3); border-radius: 10px; }
+        .section-title, .result-card .label, .hero-mini h2 { -webkit-text-fill-color: initial !important; color: #cfa776 !important; background: none !important; background-image: none !important; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
 
-        .result-area {
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: rgba(180,133,84,0.15);
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        .score {
-            font-size: 2rem;
-            font-weight: 900;
-            color: var(--accent-soft);
-        }
-        .evaluation {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--text-muted);
-        }
-        .overall-risk {
-            font-size: 1.5rem;
-            font-weight: 900;
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
-        }
-        .risk-level-high { background: var(--risk-high); color: white; }
-        .risk-level-medium { background: var(--risk-medium); color: #111; }
-        .risk-level-low { background: var(--risk-low); color: white; }
-
-        .btn-group {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-top: 2rem;
-        }
-        .btn-primary {
-            background: rgba(180,133,84,0.2);
-            border: 1px solid var(--border-light);
-            color: var(--accent-soft);
-            border-radius: 50px;
-            padding: 1rem 2rem;
-            font-weight: 900;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-        .btn-primary:hover {
-            background: rgba(180,133,84,0.4);
-            color: #fff;
-            border-color: var(--accent-glow);
-            box-shadow: 0 0 25px rgba(180,133,84,0.3);
-            transform: translateY(-3px);
-        }
-        .btn-secondary {
-            background: rgba(30,74,122,0.2);
-            border: 1px solid #1e4a7a;
-            color: #8ab8ff;
-            border-radius: 50px;
-            padding: 1rem 2rem;
-            font-weight: 900;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-        .btn-secondary:hover {
-            background: rgba(30,74,122,0.4);
-            color: #fff;
-            border-color: var(--accent-glow);
-            transform: translateY(-3px);
-        }
-
-        /* Basit alt bilgi */
-        .footer-simple {
-            text-align: center;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            background: rgba(10,14,23,0.5);
-            backdrop-filter: blur(5px);
-            border-top: 1px solid var(--border-light);
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-        .footer-simple span {
-            color: var(--accent-soft);
-            font-weight: 700;
-        }
-
-        /* Açılır hesap makinesi */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 9999;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.8);
-            backdrop-filter: blur(4px);
-        }
-        .modal-content {
-            background: var(--bg-panel);
-            margin: 5% auto;
-            padding: 0;
-            border: 2px solid var(--border-light);
-            border-radius: 30px;
-            width: 90%;
-            max-width: 300px;
-            box-shadow: var(--shadow-glow);
-        }
-        .modal-header {
-            background: rgba(180,133,84,0.15);
-            border-bottom: 2px solid var(--border-light);
-            padding: 10px 15px;
-            border-radius: 28px 28px 0 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .modal-header h2 {
-            margin: 0;
-            color: var(--accent-soft);
-            font-size: 1rem;
-            font-weight: 900;
-        }
-        .close {
-            color: var(--text-muted);
-            float: right;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .close:hover { color: var(--accent-glow); }
-        .modal-body { padding: 15px; }
-        .calc-display {
-            width: 100%;
-            height: 45px;
-            font-size: 1.4rem;
-            text-align: right;
-            padding: 0 10px;
-            border: 2px solid var(--border-light);
-            border-radius: 20px;
-            margin-bottom: 15px;
-            background: rgba(10,14,23,0.8);
-            color: var(--accent-soft);
-            font-family: 'Inter', monospace;
-            direction: ltr;
-        }
-        .calc-buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 5px;
-        }
-        .calc-btn {
-            background: rgba(180,133,84,0.1);
-            border: 1px solid var(--border-light);
-            border-radius: 15px;
-            padding: 10px 0;
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--text-light);
-            cursor: pointer;
-        }
-        .calc-btn:hover {
-            background: rgba(180,133,84,0.3);
-            border-color: var(--accent-glow);
-        }
-        .calc-btn.operator { color: var(--accent-soft); }
-        .calc-btn.equals {
-            background: rgba(180,133,84,0.3);
-            color: white;
-            grid-column: span 2;
-        }
-        .calc-btn.equals:hover { background: rgba(180,133,84,0.5); }
-
-        /* Yüzen hesap makinesi butonu */
-        .calc-floating-btn {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(180,133,84,0.2);
-            border: 1px solid var(--border-light);
-            border-radius: 50px;
-            padding: 0.8rem 1.2rem;
-            color: var(--accent-soft);
-            font-size: 1rem;
-            font-weight: 700;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .calc-floating-btn:hover {
-            background: rgba(180,133,84,0.4);
-            color: #fff;
-            border-color: var(--accent-glow);
-            box-shadow: 0 0 15px rgba(180,133,84,0.3);
-        }
-
-        /* Mobil iyileştirmeler */
-        @media (max-width: 768px) {
-            .hero-mini h2 { font-size: 1.8rem; }
-            .hero-mini p { font-size: 1rem; }
-            .sop-card { padding: 1.5rem; }
-            .signature-row { flex-direction: column; }
-            .btn-group { flex-direction: column; }
-            .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
-            .result-area { flex-direction: column; align-items: flex-start; }
-        }
+        @media (min-width: 1024px) { .featured-badge { display: flex; } .hero-mini h2 { font-size: 2.8rem; } .hero-mini p { font-size: 1.3rem; max-width: 800px; } .sop-card { padding: 2rem 2.5rem; } .sop-card h2 { font-size: 2rem; } .section-title { font-size: 1.4rem; } .item-row label { font-size: 1rem; } .btn-primary, .btn-secondary { font-size: 1.1rem; padding: 1rem 2.5rem; } .calc-floating-btn, .home-floating-btn { padding: 14px 26px !important; font-size: 1.1rem !important; bottom: 30px !important; } .score { font-size: 2.5rem; } }
+        @media (max-width: 768px) { .hero-mini { padding: 1.8rem 1rem; } .hero-mini h2 { font-size: 1.6rem; } .hero-mini p { font-size: 0.95rem; } .container { margin: 1rem auto; padding: 0 0.6rem; } .sop-card { padding: 0.9rem 0.7rem; border-radius: 20px; } .sop-card h2 { font-size: 1.3rem; margin-bottom: 1rem; } .info-row, .signature-row { flex-direction: column; gap: 0.5rem; } .signature-row { padding: 0.6rem 0.8rem; } .checklist-section { padding: 0.8rem; } .section-title { font-size: 1rem; } .item-row { flex-direction: column; align-items: flex-start; } .item-row label { font-size: 0.8rem; } .notes-field, .recommendation-box { margin-right: 0; width: 100%; } .btn-group { flex-direction: column; } .btn-primary, .btn-secondary { width: 100%; justify-content: center; } .result-area { flex-direction: column; align-items: flex-start; } .export-container { flex-direction: column; align-items: stretch; } .export-btn, .export-word-btn { width: 100%; max-width: 100%; justify-content: center; } .calc-floating-btn, .home-floating-btn { bottom: 14px !important; padding: 8px 14px !important; font-size: 0.75rem !important; gap: 4px !important; } .calc-floating-btn i, .home-floating-btn i { font-size: 0.9rem !important; } .featured-badge { display: none !important; } .score { font-size: 1.6rem; } .overall-risk { font-size: 1rem; } }
+        @media (max-width: 400px) { .hero-mini h2 { font-size: 1.2rem; } .hero-mini p { font-size: 0.8rem; } .sop-card h2 { font-size: 1.1rem; } .calc-floating-btn, .home-floating-btn { bottom: 10px !important; padding: 6px 10px !important; font-size: 0.65rem !important; } }
     </style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body style="overflow-x: hidden;">
-<!-- Parıltılı arka plan -->
-<div class="glow-bg">
-    <span></span><span></span><span></span>
-</div>
-<div class="floating-shape shape-1"></div>
-<div class="floating-shape shape-2"></div>
+<body>
+<div class="glow-bg"><span></span><span></span><span></span></div>
 
-<!-- Hero -->
+<div class="export-loading" id="exportLoading">
+    <div class="export-loading-box"><i class="fas fa-spinner"></i><h3 id="loadingTitle">Rapor oluşturuluyor...</h3><p id="loadingMsg">Lütfen bekleyin</p></div>
+</div>
+
 <section class="hero-mini">
-    <h2>📋 Standart Operasyon Prosedürleri (SOP)</h2>
-    <p>Her görevin (idari, operasyonel veya hizmet) standartlara uygunluğu - Anında düzeltici öneriler - Profesyonel raporlar</p>
+    <h2>📋 Gelişmiş SOP Denetim Sistemi</h2>
+    <p>Standart Operasyon Prosedürleri - Anında düzeltici öneriler - Profesyonel raporlar</p>
 </section>
 
-<!-- Ana Kapsayıcı -->
 <div class="container">
     <div class="sop-card" data-aos="fade-up">
-        <h2><i class="fas fa-clipboard-list"></i> Risk Analizi ile Günlük Denetim Formu</h2>
+        <div class="featured-badge"><i class="fas fa-clipboard-list"></i><span>SOPs</span></div>
+        <h2><i class="fas fa-clipboard-list" style="color:#cfa776;margin-left:0.5rem;"></i>Risk Analizli Günlük Denetim Formu</h2>
 
-        <!-- Tarih ve Yetkili Adı -->
         <div class="info-row">
-            <div class="info-item">
-                <label><i class="fas fa-calendar-alt"></i> Tarih</label>
-                <input type="date" id="checkDate">
-            </div>
-            <div class="info-item">
-                <label><i class="fas fa-user-tie"></i> Yetkili Adı</label>
-                <input type="text" id="inspectorName" placeholder="Adı girin">
-            </div>
+            <div class="info-item"><label><i class="fas fa-calendar-alt"></i> Tarih</label><input type="date" id="checkDate" value=""></div>
+            <div class="info-item"><label><i class="fas fa-user-tie"></i> Denetçi Adı</label><input type="text" id="inspectorName" placeholder="Adınızı girin"></div>
+        </div>
+        <div class="signature-row">
+            <div class="signature-item"><label><i class="fas fa-pen"></i> Denetçi Adı (İmza için)</label><input type="text" id="signatureName" placeholder="Tam ad"></div>
+            <div class="signature-item"><label><i class="fas fa-signature"></i> İmza</label><input type="text" id="signature" placeholder="Elektronik imza"></div>
         </div>
 
-        <!-- İmza bölümü -->
-        <div class="signature-row" id="signatureSection">
-            <div class="signature-item">
-                <label><i class="fas fa-pen"></i> Yetkili Adı (İmza için)</label>
-                <input type="text" id="signatureName" placeholder="Tam ad">
-            </div>
-            <div class="signature-item">
-                <label><i class="fas fa-signature"></i> İmza</label>
-                <input type="text" id="signature" placeholder="Elektronik veya ıslak imza">
-            </div>
-        </div>
-
-        <!-- Risk seviyeleri, notlar ve öneriler ile SOP bölümleri -->
         <div id="checklistContainer">
-            <!-- Bölüm 1: Hammadde Teslim Alma -->
+            <!-- 1. Hammadde Teslim Alma -->
             <div class="checklist-section">
                 <div class="section-title"><i class="fas fa-truck"></i> 1. Hammadde Teslim Alma</div>
-                
-                <!-- Madde 1.1 -->
-                <div class="checklist-item" id="item-sop1_1">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop1_1" class="sop-item" data-risk="high" data-id="sop1_1">
-                        <label for="sop1_1">Soğutuculu kamyon sıcaklığı (≤ 4°C) ve dondurulmuş (≤ -18°C) kontrolü</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop1_1" placeholder="Notlar (örn: soğutucu kamyon 5°C ölçüldü)"></textarea>
-                    </div>
-                    <div id="recommendation-sop1_1" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 1.2 -->
-                <div class="checklist-item" id="item-sop1_2">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop1_2" class="sop-item" data-risk="medium" data-id="sop1_2">
-                        <label for="sop1_2">Ambalaj bütünlüğü ve hasar/sızıntı kontrolü</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop1_2" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop1_2" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 1.3 -->
-                <div class="checklist-item" id="item-sop1_3">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop1_3" class="sop-item" data-risk="high" data-id="sop1_3">
-                        <label for="sop1_3">Son kullanma tarihlerinin kontrolü ve kullanıma uygunluk</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop1_3" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop1_3" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 1.4 -->
-                <div class="checklist-item" id="item-sop1_4">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop1_4" class="sop-item" data-risk="medium" data-id="sop1_4">
-                        <label for="sop1_4">Hayvansal ürünler için sağlık sertifikalarının varlığı</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop1_4" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop1_4" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 1.5 -->
-                <div class="checklist-item" id="item-sop1_5">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop1_5" class="sop-item" data-risk="medium" data-id="sop1_5">
-                        <label for="sop1_5">Taşıma ve teslim sırasında çiğ ve hazır ürünlerin ayrılması</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop1_5" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop1_5" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 1.6 -->
-                <div class="checklist-item" id="item-sop1_6">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop1_6" class="sop-item" data-risk="low" data-id="sop1_6">
-                        <label for="sop1_6">Teslim alma verilerinin özel kayıt defterine işlenmesi</label>
-                        <span class="risk-badge risk-low">Düşük Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop1_6" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop1_6" class="recommendation-box" style="display: none;"></div>
-                </div>
+                <div class="checklist-item" id="item-sop1_1"><div class="item-row"><input type="checkbox" id="sop1_1" class="sop-item" data-risk="high" data-id="sop1_1"><label for="sop1_1">Soğutulmuş kamyon sıcaklığı (≤ 4°C) ve dondurulmuş (≤ -18°C)</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop1_1" placeholder="Notlar"></textarea></div><div id="recommendation-sop1_1" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop1_2"><div class="item-row"><input type="checkbox" id="sop1_2" class="sop-item" data-risk="medium" data-id="sop1_2"><label for="sop1_2">Ambalaj hasar ve sızıntı kontrolü</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop1_2" placeholder="Notlar"></textarea></div><div id="recommendation-sop1_2" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop1_3"><div class="item-row"><input type="checkbox" id="sop1_3" class="sop-item" data-risk="high" data-id="sop1_3"><label for="sop1_3">Son kullanma tarihleri kontrolü</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop1_3" placeholder="Notlar"></textarea></div><div id="recommendation-sop1_3" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop1_4"><div class="item-row"><input type="checkbox" id="sop1_4" class="sop-item" data-risk="medium" data-id="sop1_4"><label for="sop1_4">Hayvansal ürünler için sağlık sertifikalarının varlığı</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop1_4" placeholder="Notlar"></textarea></div><div id="recommendation-sop1_4" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop1_5"><div class="item-row"><input type="checkbox" id="sop1_5" class="sop-item" data-risk="medium" data-id="sop1_5"><label for="sop1_5">Taşıma sırasında çiğ ve pişmiş ürünlerin ayrılması</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop1_5" placeholder="Notlar"></textarea></div><div id="recommendation-sop1_5" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop1_6"><div class="item-row"><input type="checkbox" id="sop1_6" class="sop-item" data-risk="low" data-id="sop1_6"><label for="sop1_6">Teslim verilerinin kaydedilmesi</label><span class="risk-badge risk-low">Düşük</span></div><div class="notes-field"><textarea id="note-sop1_6" placeholder="Notlar"></textarea></div><div id="recommendation-sop1_6" class="recommendation-box"></div></div>
             </div>
-
-            <!-- Bölüm 2: Depolama (Kuru, Soğuk, Dondurulmuş) -->
+            <!-- 2. Depolama -->
             <div class="checklist-section">
                 <div class="section-title"><i class="fas fa-warehouse"></i> 2. Depolama</div>
-
-                <!-- Madde 2.1 -->
-                <div class="checklist-item" id="item-sop2_1">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop2_1" class="sop-item" data-risk="medium" data-id="sop2_1">
-                        <label for="sop2_1">Kuru depoların sıcaklığı 10-21°C arası ve yeterli havalandırma</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop2_1" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop2_1" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 2.2 -->
-                <div class="checklist-item" id="item-sop2_2">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop2_2" class="sop-item" data-risk="low" data-id="sop2_2">
-                        <label for="sop2_2">Raflar yerden 15-20 cm yüksekte (temizlik kolaylığı için)</label>
-                        <span class="risk-badge risk-low">Düşük Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop2_2" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop2_2" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 2.3 -->
-                <div class="checklist-item" id="item-sop2_3">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop2_3" class="sop-item" data-risk="high" data-id="sop2_3">
-                        <label for="sop2_3">Soğutucu sıcaklığı (≤ 4°C) günde iki kez kaydedilir</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop2_3" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop2_3" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 2.4 -->
-                <div class="checklist-item" id="item-sop2_4">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop2_4" class="sop-item" data-risk="high" data-id="sop2_4">
-                        <label for="sop2_4">Dondurucu sıcaklığı (≤ -18°C) günde iki kez kaydedilir</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop2_4" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop2_4" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 2.5 -->
-                <div class="checklist-item" id="item-sop2_5">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop2_5" class="sop-item" data-risk="medium" data-id="sop2_5">
-                        <label for="sop2_5">Çiğ ürünler alt raflarda (pişmişlerin altında)</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop2_5" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop2_5" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 2.6 -->
-                <div class="checklist-item" id="item-sop2_6">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop2_6" class="sop-item" data-risk="high" data-id="sop2_6">
-                        <label for="sop2_6">Kimyasallar ve temizlik maddeleri gıdalardan ayrı depolanır</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop2_6" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop2_6" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 2.7 -->
-                <div class="checklist-item" id="item-sop2_7">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop2_7" class="sop-item" data-risk="low" data-id="sop2_7">
-                        <label for="sop2_7">FIFO (İlk Giren İlk Çıkar) sistemi uygulanır</label>
-                        <span class="risk-badge risk-low">Düşük Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop2_7" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop2_7" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 2.8 -->
-                <div class="checklist-item" id="item-sop2_8">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop2_8" class="sop-item" data-risk="medium" data-id="sop2_8">
-                        <label for="sop2_8">Soğutma havalandırmasını engellememek için aşırı istiflemeden kaçınılır</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop2_8" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop2_8" class="recommendation-box" style="display: none;"></div>
-                </div>
+                <div class="checklist-item" id="item-sop2_1"><div class="item-row"><input type="checkbox" id="sop2_1" class="sop-item" data-risk="medium" data-id="sop2_1"><label for="sop2_1">Kuru depo sıcaklığı 10-21°C, uygun havalandırma</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop2_1" placeholder="Notlar"></textarea></div><div id="recommendation-sop2_1" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop2_2"><div class="item-row"><input type="checkbox" id="sop2_2" class="sop-item" data-risk="low" data-id="sop2_2"><label for="sop2_2">Raflar yerden 15-20 cm yüksekte (temizlik için)</label><span class="risk-badge risk-low">Düşük</span></div><div class="notes-field"><textarea id="note-sop2_2" placeholder="Notlar"></textarea></div><div id="recommendation-sop2_2" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop2_3"><div class="item-row"><input type="checkbox" id="sop2_3" class="sop-item" data-risk="high" data-id="sop2_3"><label for="sop2_3">Soğutucu sıcaklığı günde iki kez kaydediliyor (≤ 4°C)</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop2_3" placeholder="Notlar"></textarea></div><div id="recommendation-sop2_3" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop2_4"><div class="item-row"><input type="checkbox" id="sop2_4" class="sop-item" data-risk="high" data-id="sop2_4"><label for="sop2_4">Dondurucu sıcaklığı günde iki kez kaydediliyor (≤ -18°C)</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop2_4" placeholder="Notlar"></textarea></div><div id="recommendation-sop2_4" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop2_5"><div class="item-row"><input type="checkbox" id="sop2_5" class="sop-item" data-risk="medium" data-id="sop2_5"><label for="sop2_5">Çiğ ürünler pişmiş ürünlerin alt raflarında</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop2_5" placeholder="Notlar"></textarea></div><div id="recommendation-sop2_5" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop2_6"><div class="item-row"><input type="checkbox" id="sop2_6" class="sop-item" data-risk="high" data-id="sop2_6"><label for="sop2_6">Kimyasallar gıda maddelerinden ayrı</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop2_6" placeholder="Notlar"></textarea></div><div id="recommendation-sop2_6" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop2_7"><div class="item-row"><input type="checkbox" id="sop2_7" class="sop-item" data-risk="low" data-id="sop2_7"><label for="sop2_7">FIFO sistemi uygulanıyor</label><span class="risk-badge risk-low">Düşük</span></div><div class="notes-field"><textarea id="note-sop2_7" placeholder="Notlar"></textarea></div><div id="recommendation-sop2_7" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop2_8"><div class="item-row"><input type="checkbox" id="sop2_8" class="sop-item" data-risk="medium" data-id="sop2_8"><label for="sop2_8">Soğutmayı engellemek için aşırı istifleme yok</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop2_8" placeholder="Notlar"></textarea></div><div id="recommendation-sop2_8" class="recommendation-box"></div></div>
             </div>
-
-            <!-- Bölüm 3: Hazırlık ve İşleme -->
+            <!-- 3. Hazırlık ve Ön Hazırlık -->
             <div class="checklist-section">
-                <div class="section-title"><i class="fas fa-kitchen-set"></i> 3. Hazırlık ve İşleme</div>
-
-                <!-- Madde 3.1 -->
-                <div class="checklist-item" id="item-sop3_1">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop3_1" class="sop-item" data-risk="high" data-id="sop3_1">
-                        <label for="sop3_1">Başlamadan önce eller su ve sabunla 20 saniye yıkanır</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop3_1" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop3_1" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 3.2 -->
-                <div class="checklist-item" id="item-sop3_2">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop3_2" class="sop-item" data-risk="high" data-id="sop3_2">
-                        <label for="sop3_2">Et, tavuk, sebze ve balık için ayrı kesme tahtaları kullanılır</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop3_2" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop3_2" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 3.3 -->
-                <div class="checklist-item" id="item-sop3_3">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop3_3" class="sop-item" data-risk="high" data-id="sop3_3">
-                        <label for="sop3_3">Çiğ ürün hazırlığı sonrası alet ve yüzeyler dezenfekte edilir</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop3_3" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop3_3" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 3.4 -->
-                <div class="checklist-item" id="item-sop3_4">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop3_4" class="sop-item" data-risk="high" data-id="sop3_4">
-                        <label for="sop3_4">Bozulabilir gıdalar 2 saatten fazla soğutucu dışında bırakılmaz</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop3_4" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop3_4" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 3.5 -->
-                <div class="checklist-item" id="item-sop3_5">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop3_5" class="sop-item" data-risk="medium" data-id="sop3_5">
-                        <label for="sop3_5">Dondurulmuş gıdalar sadece buzdolabında veya mikrodalgada çözülür</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop3_5" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop3_5" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 3.6 -->
-                <div class="checklist-item" id="item-sop3_6">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop3_6" class="sop-item" data-risk="medium" data-id="sop3_6">
-                        <label for="sop3_6">Hazırlık sırasında gıdalar kontaminasyona karşı kapalı tutulur</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop3_6" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop3_6" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 3.7 -->
-                <div class="checklist-item" id="item-sop3_7">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop3_7" class="sop-item" data-risk="medium" data-id="sop3_7">
-                        <label for="sop3_7">Sebze ve meyveler akan su altında iyice yıkanır</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop3_7" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop3_7" class="recommendation-box" style="display: none;"></div>
-                </div>
+                <div class="section-title"><i class="fas fa-kitchen-set"></i> 3. Hazırlık ve Ön Hazırlık</div>
+                <div class="checklist-item" id="item-sop3_1"><div class="item-row"><input type="checkbox" id="sop3_1" class="sop-item" data-risk="high" data-id="sop3_1"><label for="sop3_1">Başlamadan önce 20 saniye el yıkama</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop3_1" placeholder="Notlar"></textarea></div><div id="recommendation-sop3_1" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop3_2"><div class="item-row"><input type="checkbox" id="sop3_2" class="sop-item" data-risk="high" data-id="sop3_2"><label for="sop3_2">Et, tavuk, sebze ve balık için ayrı kesme tahtaları</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop3_2" placeholder="Notlar"></textarea></div><div id="recommendation-sop3_2" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop3_3"><div class="item-row"><input type="checkbox" id="sop3_3" class="sop-item" data-risk="high" data-id="sop3_3"><label for="sop3_3">Çiğ ürünler sonrası ekipman dezenfeksiyonu</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop3_3" placeholder="Notlar"></textarea></div><div id="recommendation-sop3_3" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop3_4"><div class="item-row"><input type="checkbox" id="sop3_4" class="sop-item" data-risk="high" data-id="sop3_4"><label for="sop3_4">Bozulabilir ürünler 2 saatten fazla dışarıda değil</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop3_4" placeholder="Notlar"></textarea></div><div id="recommendation-sop3_4" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop3_5"><div class="item-row"><input type="checkbox" id="sop3_5" class="sop-item" data-risk="medium" data-id="sop3_5"><label for="sop3_5">Dondurulmuş ürünler buzdolabında veya mikrodalgada çözülüyor</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop3_5" placeholder="Notlar"></textarea></div><div id="recommendation-sop3_5" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop3_6"><div class="item-row"><input type="checkbox" id="sop3_6" class="sop-item" data-risk="medium" data-id="sop3_6"><label for="sop3_6">Hazırlık sırasında gıdaların kapatılması</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop3_6" placeholder="Notlar"></textarea></div><div id="recommendation-sop3_6" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop3_7"><div class="item-row"><input type="checkbox" id="sop3_7" class="sop-item" data-risk="medium" data-id="sop3_7"><label for="sop3_7">Sebze ve meyvelerin akan su altında yıkanması</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop3_7" placeholder="Notlar"></textarea></div><div id="recommendation-sop3_7" class="recommendation-box"></div></div>
             </div>
-
-            <!-- Bölüm 4: Pişirme ve Yeniden Isıtma -->
+            <!-- 4. Pişirme ve Yeniden Isıtma -->
             <div class="checklist-section">
                 <div class="section-title"><i class="fas fa-fire"></i> 4. Pişirme ve Yeniden Isıtma</div>
-
-                <!-- Madde 4.1 -->
-                <div class="checklist-item" id="item-sop4_1">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop4_1" class="sop-item" data-risk="high" data-id="sop4_1">
-                        <label for="sop4_1">Kanatlı eti iç sıcaklığı 74°C'ye ulaşır</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop4_1" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop4_1" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 4.2 -->
-                <div class="checklist-item" id="item-sop4_2">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop4_2" class="sop-item" data-risk="high" data-id="sop4_2">
-                        <label for="sop4_2">Kıyma iç sıcaklığı 71°C'ye ulaşır</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop4_2" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop4_2" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 4.3 -->
-                <div class="checklist-item" id="item-sop4_3">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop4_3" class="sop-item" data-risk="high" data-id="sop4_3">
-                        <label for="sop4_3">Balık ve bütün etlerin iç sıcaklığı 63°C'ye ulaşır</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop4_3" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop4_3" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 4.4 -->
-                <div class="checklist-item" id="item-sop4_4">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop4_4" class="sop-item" data-risk="high" data-id="sop4_4">
-                        <label for="sop4_4">Muhafaza edilmiş gıdalar 2 saat içinde 74°C'ye yeniden ısıtılır</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop4_4" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop4_4" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 4.5 -->
-                <div class="checklist-item" id="item-sop4_5">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop4_5" class="sop-item" data-risk="medium" data-id="sop4_5">
-                        <label for="sop4_5">Pişirme sıcaklıkları günlük kayıt defterine işlenir</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop4_5" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop4_5" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 4.6 -->
-                <div class="checklist-item" id="item-sop4_6">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop4_6" class="sop-item" data-risk="medium" data-id="sop4_6">
-                        <label for="sop4_6">Yemekler bir defadan fazla yeniden ısıtılmaz</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop4_6" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop4_6" class="recommendation-box" style="display: none;"></div>
-                </div>
+                <div class="checklist-item" id="item-sop4_1"><div class="item-row"><input type="checkbox" id="sop4_1" class="sop-item" data-risk="high" data-id="sop4_1"><label for="sop4_1">Tavuk iç sıcaklığı 74°C</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop4_1" placeholder="Notlar"></textarea></div><div id="recommendation-sop4_1" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop4_2"><div class="item-row"><input type="checkbox" id="sop4_2" class="sop-item" data-risk="high" data-id="sop4_2"><label for="sop4_2">Kıyma iç sıcaklığı 71°C</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop4_2" placeholder="Notlar"></textarea></div><div id="recommendation-sop4_2" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop4_3"><div class="item-row"><input type="checkbox" id="sop4_3" class="sop-item" data-risk="high" data-id="sop4_3"><label for="sop4_3">Balık iç sıcaklığı 63°C</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop4_3" placeholder="Notlar"></textarea></div><div id="recommendation-sop4_3" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop4_4"><div class="item-row"><input type="checkbox" id="sop4_4" class="sop-item" data-risk="high" data-id="sop4_4"><label for="sop4_4">Saklanan gıdalar 2 saat içinde 74°C'ye ısıtılıyor</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop4_4" placeholder="Notlar"></textarea></div><div id="recommendation-sop4_4" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop4_5"><div class="item-row"><input type="checkbox" id="sop4_5" class="sop-item" data-risk="medium" data-id="sop4_5"><label for="sop4_5">Pişirme sıcaklıkları günlük kaydediliyor</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop4_5" placeholder="Notlar"></textarea></div><div id="recommendation-sop4_5" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop4_6"><div class="item-row"><input type="checkbox" id="sop4_6" class="sop-item" data-risk="medium" data-id="sop4_6"><label for="sop4_6">Gıda birden fazla kez ısıtılmıyor</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop4_6" placeholder="Notlar"></textarea></div><div id="recommendation-sop4_6" class="recommendation-box"></div></div>
             </div>
-
-            <!-- Bölüm 5: Sunum ve Servis -->
+            <!-- 5. Sunum ve Servis -->
             <div class="checklist-section">
                 <div class="section-title"><i class="fas fa-utensils"></i> 5. Sunum ve Servis</div>
-
-                <!-- Madde 5.1 -->
-                <div class="checklist-item" id="item-sop5_1">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop5_1" class="sop-item" data-risk="high" data-id="sop5_1">
-                        <label for="sop5_1">Sunum tabakları hazırlamadan önce eller yıkanır</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop5_1" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop5_1" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 5.2 -->
-                <div class="checklist-item" id="item-sop5_2">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop5_2" class="sop-item" data-risk="high" data-id="sop5_2">
-                        <label for="sop5_2">Her tabak için temiz ve dezenfekte edilmiş servis araçları kullanılır</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop5_2" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop5_2" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 5.3 -->
-                <div class="checklist-item" id="item-sop5_3">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop5_3" class="sop-item" data-risk="high" data-id="sop5_3">
-                        <label for="sop5_3">Sıcak yemeklerin servis sıcaklığı ≥ 60°C tutulur</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop5_3" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop5_3" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 5.4 -->
-                <div class="checklist-item" id="item-sop5_4">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop5_4" class="sop-item" data-risk="high" data-id="sop5_4">
-                        <label for="sop5_4">Soğuk yemeklerin servis sıcaklığı ≤ 4°C tutulur</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop5_4" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop5_4" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 5.5 -->
-                <div class="checklist-item" id="item-sop5_5">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop5_5" class="sop-item" data-risk="medium" data-id="sop5_5">
-                        <label for="sop5_5">Yenilebilir kısımlara doğrudan elle dokunulmaz</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop5_5" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop5_5" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 5.6 -->
-                <div class="checklist-item" id="item-sop5_6">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop5_6" class="sop-item" data-risk="medium" data-id="sop5_6">
-                        <label for="sop5_6">Açık büfede sergilenen yiyeceklerin üzeri kapalıdır</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop5_6" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop5_6" class="recommendation-box" style="display: none;"></div>
-                </div>
+                <div class="checklist-item" id="item-sop5_1"><div class="item-row"><input type="checkbox" id="sop5_1" class="sop-item" data-risk="high" data-id="sop5_1"><label for="sop5_1">Servis öncesi el yıkama</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop5_1" placeholder="Notlar"></textarea></div><div id="recommendation-sop5_1" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop5_2"><div class="item-row"><input type="checkbox" id="sop5_2" class="sop-item" data-risk="high" data-id="sop5_2"><label for="sop5_2">Temiz ve dezenfekte edilmiş servis kapları</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop5_2" placeholder="Notlar"></textarea></div><div id="recommendation-sop5_2" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop5_3"><div class="item-row"><input type="checkbox" id="sop5_3" class="sop-item" data-risk="high" data-id="sop5_3"><label for="sop5_3">Sıcak gıda sıcaklığı ≥ 60°C</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop5_3" placeholder="Notlar"></textarea></div><div id="recommendation-sop5_3" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop5_4"><div class="item-row"><input type="checkbox" id="sop5_4" class="sop-item" data-risk="high" data-id="sop5_4"><label for="sop5_4">Soğuk gıda sıcaklığı ≤ 4°C</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop5_4" placeholder="Notlar"></textarea></div><div id="recommendation-sop5_4" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop5_5"><div class="item-row"><input type="checkbox" id="sop5_5" class="sop-item" data-risk="medium" data-id="sop5_5"><label for="sop5_5">Servis sırasında elle temas edilmiyor</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop5_5" placeholder="Notlar"></textarea></div><div id="recommendation-sop5_5" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop5_6"><div class="item-row"><input type="checkbox" id="sop5_6" class="sop-item" data-risk="medium" data-id="sop5_6"><label for="sop5_6">Açık büfe sunumlarda gıdalar kapatılıyor</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop5_6" placeholder="Notlar"></textarea></div><div id="recommendation-sop5_6" class="recommendation-box"></div></div>
             </div>
-
-            <!-- Bölüm 6: Soğutma ve Muhafaza -->
+            <!-- 6. Soğutma ve Muhafaza -->
             <div class="checklist-section">
                 <div class="section-title"><i class="fas fa-snowflake"></i> 6. Soğutma ve Muhafaza</div>
-
-                <!-- Madde 6.1 -->
-                <div class="checklist-item" id="item-sop6_1">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop6_1" class="sop-item" data-risk="high" data-id="sop6_1">
-                        <label for="sop6_1">Sıcak yemekler 2 saat içinde 60°C'den 20°C'ye soğutulur</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop6_1" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop6_1" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 6.2 -->
-                <div class="checklist-item" id="item-sop6_2">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop6_2" class="sop-item" data-risk="high" data-id="sop6_2">
-                        <label for="sop6_2">Ardından 4 saat içinde 20°C'den 4°C'ye soğutulur</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop6_2" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop6_2" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 6.3 -->
-                <div class="checklist-item" id="item-sop6_3">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop6_3" class="sop-item" data-risk="medium" data-id="sop6_3">
-                        <label for="sop6_3">Hızlı soğutma için sığ kaplar kullanılır (derinlik ≤ 10 cm)</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop6_3" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop6_3" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 6.4 -->
-                <div class="checklist-item" id="item-sop6_4">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop6_4" class="sop-item" data-risk="medium" data-id="sop6_4">
-                        <label for="sop6_4">Tam soğuduktan sonra üzeri kapatılır ve üretim tarihi yazılır</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop6_4" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop6_4" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 6.5 -->
-                <div class="checklist-item" id="item-sop6_5">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop6_5" class="sop-item" data-risk="high" data-id="sop6_5">
-                        <label for="sop6_5">Sıcak yemekler doğrudan buzdolabına konmaz</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop6_5" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop6_5" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 6.6 -->
-                <div class="checklist-item" id="item-sop6_6">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop6_6" class="sop-item" data-risk="high" data-id="sop6_6">
-                        <label for="sop6_6">Soğutucu ve dondurucu sıcaklıkları izlenir ve kaydedilir</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop6_6" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop6_6" class="recommendation-box" style="display: none;"></div>
-                </div>
+                <div class="checklist-item" id="item-sop6_1"><div class="item-row"><input type="checkbox" id="sop6_1" class="sop-item" data-risk="high" data-id="sop6_1"><label for="sop6_1">60°C'den 20°C'ye 2 saat içinde soğutma</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop6_1" placeholder="Notlar"></textarea></div><div id="recommendation-sop6_1" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop6_2"><div class="item-row"><input type="checkbox" id="sop6_2" class="sop-item" data-risk="high" data-id="sop6_2"><label for="sop6_2">20°C'den 4°C'ye 4 saat içinde soğutma</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop6_2" placeholder="Notlar"></textarea></div><div id="recommendation-sop6_2" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop6_3"><div class="item-row"><input type="checkbox" id="sop6_3" class="sop-item" data-risk="medium" data-id="sop6_3"><label for="sop6_3">Hızlı soğutma için 10 cm'den derin olmayan kaplar</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop6_3" placeholder="Notlar"></textarea></div><div id="recommendation-sop6_3" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop6_4"><div class="item-row"><input type="checkbox" id="sop6_4" class="sop-item" data-risk="medium" data-id="sop6_4"><label for="sop6_4">Tam soğutma sonrası üretim tarihi etiketi ile kapatma</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop6_4" placeholder="Notlar"></textarea></div><div id="recommendation-sop6_4" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop6_5"><div class="item-row"><input type="checkbox" id="sop6_5" class="sop-item" data-risk="high" data-id="sop6_5"><label for="sop6_5">Sıcak gıdalar doğrudan buzdolabına konulmuyor</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop6_5" placeholder="Notlar"></textarea></div><div id="recommendation-sop6_5" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop6_6"><div class="item-row"><input type="checkbox" id="sop6_6" class="sop-item" data-risk="high" data-id="sop6_6"><label for="sop6_6">Soğutucu sıcaklıkları izleniyor ve kaydediliyor</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop6_6" placeholder="Notlar"></textarea></div><div id="recommendation-sop6_6" class="recommendation-box"></div></div>
             </div>
-
-            <!-- Bölüm 7: Kişisel Hijyen -->
+            <!-- 7. Kişisel Hijyen -->
             <div class="checklist-section">
                 <div class="section-title"><i class="fas fa-user-shield"></i> 7. Kişisel Hijyen</div>
-
-                <!-- Madde 7.1 -->
-                <div class="checklist-item" id="item-sop7_1">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop7_1" class="sop-item" data-risk="high" data-id="sop7_1">
-                        <label for="sop7_1">Temiz iş kıyafeti giyilir (bone, önlük, kep)</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop7_1" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop7_1" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 7.2 -->
-                <div class="checklist-item" id="item-sop7_2">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop7_2" class="sop-item" data-risk="high" data-id="sop7_2">
-                        <label for="sop7_2">Saçlar tamamen örtülür (bone veya kep)</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop7_2" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop7_2" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 7.3 -->
-                <div class="checklist-item" id="item-sop7_3">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop7_3" class="sop-item" data-risk="medium" data-id="sop7_3">
-                        <label for="sop7_3">Çalışma sırasında takı veya saat takılmaz</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop7_3" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop7_3" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 7.4 -->
-                <div class="checklist-item" id="item-sop7_4">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop7_4" class="sop-item" data-risk="medium" data-id="sop7_4">
-                        <label for="sop7_4">Tırnaklar kısa kesilmiş ve oje sürülmemiş</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop7_4" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop7_4" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 7.5 -->
-                <div class="checklist-item" id="item-sop7_5">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop7_5" class="sop-item" data-risk="high" data-id="sop7_5">
-                        <label for="sop7_5">Bulaşıcı hastalık (ishal, kusma, deri enfeksiyonu) bildirilir</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop7_5" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop7_5" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 7.6 -->
-                <div class="checklist-item" id="item-sop7_6">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop7_6" class="sop-item" data-risk="high" data-id="sop7_6">
-                        <label for="sop7_6">Tuvalet, sigara, yemek, çöp teması sonrası eller yıkanır</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop7_6" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop7_6" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 7.7 -->
-                <div class="checklist-item" id="item-sop7_7">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop7_7" class="sop-item" data-risk="medium" data-id="sop7_7">
-                        <label for="sop7_7">Alkol bazlı el dezenfektanı kolay ulaşılabilir yerdedir</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop7_7" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop7_7" class="recommendation-box" style="display: none;"></div>
-                </div>
+                <div class="checklist-item" id="item-sop7_1"><div class="item-row"><input type="checkbox" id="sop7_1" class="sop-item" data-risk="high" data-id="sop7_1"><label for="sop7_1">Temiz üniforma (önlük, bone, şapka)</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop7_1" placeholder="Notlar"></textarea></div><div id="recommendation-sop7_1" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop7_2"><div class="item-row"><input type="checkbox" id="sop7_2" class="sop-item" data-risk="high" data-id="sop7_2"><label for="sop7_2">Saçlar tamamen kapatılmış</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop7_2" placeholder="Notlar"></textarea></div><div id="recommendation-sop7_2" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop7_3"><div class="item-row"><input type="checkbox" id="sop7_3" class="sop-item" data-risk="medium" data-id="sop7_3"><label for="sop7_3">Takı ve saat kullanılmıyor</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop7_3" placeholder="Notlar"></textarea></div><div id="recommendation-sop7_3" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop7_4"><div class="item-row"><input type="checkbox" id="sop7_4" class="sop-item" data-risk="medium" data-id="sop7_4"><label for="sop7_4">Tırnaklar kısa ve ojeli değil</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop7_4" placeholder="Notlar"></textarea></div><div id="recommendation-sop7_4" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop7_5"><div class="item-row"><input type="checkbox" id="sop7_5" class="sop-item" data-risk="high" data-id="sop7_5"><label for="sop7_5">Bulaşıcı hastalık (ishal, kusma) raporlanıyor</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop7_5" placeholder="Notlar"></textarea></div><div id="recommendation-sop7_5" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop7_6"><div class="item-row"><input type="checkbox" id="sop7_6" class="sop-item" data-risk="high" data-id="sop7_6"><label for="sop7_6">Tuvalet, sigara, yemek ve atık sonrası el yıkama</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop7_6" placeholder="Notlar"></textarea></div><div id="recommendation-sop7_6" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop7_7"><div class="item-row"><input type="checkbox" id="sop7_7" class="sop-item" data-risk="medium" data-id="sop7_7"><label for="sop7_7">Alkol bazlı el dezenfektanı mevcut</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop7_7" placeholder="Notlar"></textarea></div><div id="recommendation-sop7_7" class="recommendation-box"></div></div>
             </div>
-
-            <!-- Bölüm 8: Ekipman ve Tesis Temizlik/Dezenfeksiyon -->
+            <!-- 8. Temizlik ve Dezenfeksiyon -->
             <div class="checklist-section">
                 <div class="section-title"><i class="fas fa-broom"></i> 8. Temizlik ve Dezenfeksiyon</div>
-
-                <!-- Madde 8.1 -->
-                <div class="checklist-item" id="item-sop8_1">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop8_1" class="sop-item" data-risk="high" data-id="sop8_1">
-                        <label for="sop8_1">Çalışma yüzeyleri her kullanımdan sonra temizlenir ve dezenfekte edilir</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop8_1" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop8_1" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 8.2 -->
-                <div class="checklist-item" id="item-sop8_2">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop8_2" class="sop-item" data-risk="high" data-id="sop8_2">
-                        <label for="sop8_2">Lavabo ve el yıkama yerleri temizlenir ve dezenfekte edilir</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop8_2" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop8_2" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 8.3 -->
-                <div class="checklist-item" id="item-sop8_3">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop8_3" class="sop-item" data-risk="medium" data-id="sop8_3">
-                        <label for="sop8_3">Zemin ve duvarlar yiyecek artıklarından anında temizlenir</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop8_3" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop8_3" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 8.4 -->
-                <div class="checklist-item" id="item-sop8_4">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop8_4" class="sop-item" data-risk="high" data-id="sop8_4">
-                        <label for="sop8_4">Onaylı dezenfektanlar doğru konsantrasyonda kullanılır</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop8_4" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop8_4" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 8.5 -->
-                <div class="checklist-item" id="item-sop8_5">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop8_5" class="sop-item" data-risk="medium" data-id="sop8_5">
-                        <label for="sop8_5">Temizlik planı asılı ve günlük imzalanmış</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop8_5" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop8_5" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 8.6 -->
-                <div class="checklist-item" id="item-sop8_6">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop8_6" class="sop-item" data-risk="medium" data-id="sop8_6">
-                        <label for="sop8_6">Aspiratör ve klimalar periyodik olarak temizlenir</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop8_6" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop8_6" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 8.7 -->
-                <div class="checklist-item" id="item-sop8_7">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop8_7" class="sop-item" data-risk="high" data-id="sop8_7">
-                        <label for="sop8_7">Bulaşıklar en az 60°C'de bulaşık makinesinde yıkanır</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop8_7" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop8_7" class="recommendation-box" style="display: none;"></div>
-                </div>
+                <div class="checklist-item" id="item-sop8_1"><div class="item-row"><input type="checkbox" id="sop8_1" class="sop-item" data-risk="high" data-id="sop8_1"><label for="sop8_1">Her kullanımdan sonra çalışma yüzeyleri temizleniyor</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop8_1" placeholder="Notlar"></textarea></div><div id="recommendation-sop8_1" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop8_2"><div class="item-row"><input type="checkbox" id="sop8_2" class="sop-item" data-risk="high" data-id="sop8_2"><label for="sop8_2">Lavabolar dezenfekte ediliyor</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop8_2" placeholder="Notlar"></textarea></div><div id="recommendation-sop8_2" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop8_3"><div class="item-row"><input type="checkbox" id="sop8_3" class="sop-item" data-risk="medium" data-id="sop8_3"><label for="sop8_3">Zemin ve duvarlar yemek artıklarından temiz</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop8_3" placeholder="Notlar"></textarea></div><div id="recommendation-sop8_3" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop8_4"><div class="item-row"><input type="checkbox" id="sop8_4" class="sop-item" data-risk="high" data-id="sop8_4"><label for="sop8_4">Onaylı dezenfektanlar doğru konsantrasyonda</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop8_4" placeholder="Notlar"></textarea></div><div id="recommendation-sop8_4" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop8_5"><div class="item-row"><input type="checkbox" id="sop8_5" class="sop-item" data-risk="medium" data-id="sop8_5"><label for="sop8_5">Temizlik çizelgesi asılı ve imzalı</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop8_5" placeholder="Notlar"></textarea></div><div id="recommendation-sop8_5" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop8_6"><div class="item-row"><input type="checkbox" id="sop8_6" class="sop-item" data-risk="medium" data-id="sop8_6"><label for="sop8_6">Aspiratörler ve klimalar düzenli temizleniyor</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop8_6" placeholder="Notlar"></textarea></div><div id="recommendation-sop8_6" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop8_7"><div class="item-row"><input type="checkbox" id="sop8_7" class="sop-item" data-risk="high" data-id="sop8_7"><label for="sop8_7">Bulaşıklar ≥ 60°C'de yıkanıyor</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop8_7" placeholder="Notlar"></textarea></div><div id="recommendation-sop8_7" class="recommendation-box"></div></div>
             </div>
-
-            <!-- Bölüm 9: Haşere Kontrolü -->
+            <!-- 9. Haşere Kontrolü -->
             <div class="checklist-section">
                 <div class="section-title"><i class="fas fa-bug"></i> 9. Haşere Kontrolü</div>
-
-                <!-- Madde 9.1 -->
-                <div class="checklist-item" id="item-sop9_1">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop9_1" class="sop-item" data-risk="high" data-id="sop9_1">
-                        <label for="sop9_1">Tesiste böcek veya kemirgen bulunmaz</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop9_1" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop9_1" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 9.2 -->
-                <div class="checklist-item" id="item-sop9_2">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop9_2" class="sop-item" data-risk="medium" data-id="sop9_2">
-                        <label for="sop9_2">Duvar, kapı ve pencerelerdeki tüm açıklıklar kapatılır</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop9_2" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop9_2" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 9.3 -->
-                <div class="checklist-item" id="item-sop9_3">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop9_3" class="sop-item" data-risk="medium" data-id="sop9_3">
-                        <label for="sop9_3">Uygun yerlere ışık veya yapışkan tuzaklar yerleştirilir</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop9_3" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop9_3" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 9.4 -->
-                <div class="checklist-item" id="item-sop9_4">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop9_4" class="sop-item" data-risk="medium" data-id="sop9_4">
-                        <label for="sop9_4">Onaylı haşere kontrol firması ile sözleşme ve periyodik ziyaretler</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop9_4" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop9_4" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 9.5 -->
-                <div class="checklist-item" id="item-sop9_5">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop9_5" class="sop-item" data-risk="high" data-id="sop9_5">
-                        <label for="sop9_5">Çöpler hemen uzaklaştırılır ve konteynerler günlük temizlenir</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop9_5" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop9_5" class="recommendation-box" style="display: none;"></div>
-                </div>
+                <div class="checklist-item" id="item-sop9_1"><div class="item-row"><input type="checkbox" id="sop9_1" class="sop-item" data-risk="high" data-id="sop9_1"><label for="sop9_1">Tesis içinde böcek veya kemirgen yok</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop9_1" placeholder="Notlar"></textarea></div><div id="recommendation-sop9_1" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop9_2"><div class="item-row"><input type="checkbox" id="sop9_2" class="sop-item" data-risk="medium" data-id="sop9_2"><label for="sop9_2">Duvarlardaki ve kapılardaki delikler kapatılmış</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop9_2" placeholder="Notlar"></textarea></div><div id="recommendation-sop9_2" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop9_3"><div class="item-row"><input type="checkbox" id="sop9_3" class="sop-item" data-risk="medium" data-id="sop9_3"><label for="sop9_3">Uygun yerlere tuzaklar takılmış</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop9_3" placeholder="Notlar"></textarea></div><div id="recommendation-sop9_3" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop9_4"><div class="item-row"><input type="checkbox" id="sop9_4" class="sop-item" data-risk="medium" data-id="sop9_4"><label for="sop9_4">Yetkili haşere kontrol şirketi ile sözleşme</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop9_4" placeholder="Notlar"></textarea></div><div id="recommendation-sop9_4" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop9_5"><div class="item-row"><input type="checkbox" id="sop9_5" class="sop-item" data-risk="high" data-id="sop9_5"><label for="sop9_5">Atıklar anında uzaklaştırılıyor ve kapları günlük temizleniyor</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop9_5" placeholder="Notlar"></textarea></div><div id="recommendation-sop9_5" class="recommendation-box"></div></div>
             </div>
-
-            <!-- Bölüm 10: Dokümantasyon ve Eğitim -->
+            <!-- 10. Dokümantasyon ve Eğitim -->
             <div class="checklist-section">
                 <div class="section-title"><i class="fas fa-file-alt"></i> 10. Dokümantasyon ve Eğitim</div>
-
-                <!-- Madde 10.1 -->
-                <div class="checklist-item" id="item-sop10_1">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop10_1" class="sop-item" data-risk="high" data-id="sop10_1">
-                        <label for="sop10_1">Soğutucu ve dondurucu sıcaklıkları günlük kaydedilir</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop10_1" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop10_1" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 10.2 -->
-                <div class="checklist-item" id="item-sop10_2">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop10_2" class="sop-item" data-risk="high" data-id="sop10_2">
-                        <label for="sop10_2">Pişirme ve soğutma sıcaklıkları kayıtlara işlenir</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop10_2" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop10_2" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 10.3 -->
-                <div class="checklist-item" id="item-sop10_3">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop10_3" class="sop-item" data-risk="medium" data-id="sop10_3">
-                        <label for="sop10_3">Teslim alma kayıtları en az 6 ay saklanır</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop10_3" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop10_3" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 10.4 -->
-                <div class="checklist-item" id="item-sop10_4">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop10_4" class="sop-item" data-risk="low" data-id="sop10_4">
-                        <label for="sop10_4">Yetkili tarafından tüm kayıtlar günlük imzalanır</label>
-                        <span class="risk-badge risk-low">Düşük Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop10_4" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop10_4" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 10.5 -->
-                <div class="checklist-item" id="item-sop10_5">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop10_5" class="sop-item" data-risk="high" data-id="sop10_5">
-                        <label for="sop10_5">Tüm çalışanlar gıda güvenliği eğitimi almıştır</label>
-                        <span class="risk-badge risk-high">Yüksek Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop10_5" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop10_5" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 10.6 -->
-                <div class="checklist-item" id="item-sop10_6">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop10_6" class="sop-item" data-risk="medium" data-id="sop10_6">
-                        <label for="sop10_6">Açık talimatlar asılı (el yıkama, sıcaklıklar)</label>
-                        <span class="risk-badge risk-medium">Orta Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop10_6" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop10_6" class="recommendation-box" style="display: none;"></div>
-                </div>
-
-                <!-- Madde 10.7 -->
-                <div class="checklist-item" id="item-sop10_7">
-                    <div class="item-row">
-                        <input type="checkbox" id="sop10_7" class="sop-item" data-risk="low" data-id="sop10_7">
-                        <label for="sop10_7">Güvenlik prosedürlerini hatırlatmak için periyodik toplantılar yapılır</label>
-                        <span class="risk-badge risk-low">Düşük Risk</span>
-                    </div>
-                    <div class="notes-field">
-                        <textarea id="note-sop10_7" placeholder="Notlar"></textarea>
-                    </div>
-                    <div id="recommendation-sop10_7" class="recommendation-box" style="display: none;"></div>
-                </div>
+                <div class="checklist-item" id="item-sop10_1"><div class="item-row"><input type="checkbox" id="sop10_1" class="sop-item" data-risk="high" data-id="sop10_1"><label for="sop10_1">Soğutucu sıcaklıkları günlük kaydediliyor</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop10_1" placeholder="Notlar"></textarea></div><div id="recommendation-sop10_1" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop10_2"><div class="item-row"><input type="checkbox" id="sop10_2" class="sop-item" data-risk="high" data-id="sop10_2"><label for="sop10_2">Pişirme ve soğutma sıcaklıkları kaydediliyor</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop10_2" placeholder="Notlar"></textarea></div><div id="recommendation-sop10_2" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop10_3"><div class="item-row"><input type="checkbox" id="sop10_3" class="sop-item" data-risk="medium" data-id="sop10_3"><label for="sop10_3">Teslim kayıtları en az 6 ay saklanıyor</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop10_3" placeholder="Notlar"></textarea></div><div id="recommendation-sop10_3" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop10_4"><div class="item-row"><input type="checkbox" id="sop10_4" class="sop-item" data-risk="low" data-id="sop10_4"><label for="sop10_4">Tüm kayıtlar sorumlu tarafından imzalanıyor</label><span class="risk-badge risk-low">Düşük</span></div><div class="notes-field"><textarea id="note-sop10_4" placeholder="Notlar"></textarea></div><div id="recommendation-sop10_4" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop10_5"><div class="item-row"><input type="checkbox" id="sop10_5" class="sop-item" data-risk="high" data-id="sop10_5"><label for="sop10_5">Tüm çalışanlar gıda güvenliği eğitimi almış</label><span class="risk-badge risk-high">Yüksek</span></div><div class="notes-field"><textarea id="note-sop10_5" placeholder="Notlar"></textarea></div><div id="recommendation-sop10_5" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop10_6"><div class="item-row"><input type="checkbox" id="sop10_6" class="sop-item" data-risk="medium" data-id="sop10_6"><label for="sop10_6">Asılı açık talimatlar (el yıkama, sıcaklıklar)</label><span class="risk-badge risk-medium">Orta</span></div><div class="notes-field"><textarea id="note-sop10_6" placeholder="Notlar"></textarea></div><div id="recommendation-sop10_6" class="recommendation-box"></div></div>
+                <div class="checklist-item" id="item-sop10_7"><div class="item-row"><input type="checkbox" id="sop10_7" class="sop-item" data-risk="low" data-id="sop10_7"><label for="sop10_7">Düzenli güvenlik toplantıları yapılıyor</label><span class="risk-badge risk-low">Düşük</span></div><div class="notes-field"><textarea id="note-sop10_7" placeholder="Notlar"></textarea></div><div id="recommendation-sop10_7" class="recommendation-box"></div></div>
             </div>
         </div>
 
-        <!-- Değerlendirme sonucu -->
-        <div class="result-area" id="resultArea" style="display: none;">
-            <div>
-                <span class="score" id="scoreDisplay">%0</span>
-                <span class="evaluation" id="evaluationText"></span>
-            </div>
+        <div class="result-area" id="resultArea">
+            <div><span class="score" id="scoreDisplay">0%</span><span class="evaluation" id="evaluationText"></span></div>
             <div id="overallRiskDisplay" class="overall-risk"></div>
         </div>
-
-        <!-- Butonlar -->
-        <div class="btn-group">
-            <button class="btn-primary" id="calculateBtn"><i class="fas fa-calculator"></i> Sonuç ve Önerileri Hesapla</button>
-            <button class="btn-secondary" id="exportWordBtn"><i class="fas fa-file-word"></i> Word Raporu Çıkar</button>
+        <div class="btn-group"><button class="btn-primary" id="calculateBtn"><i class="fas fa-calculator"></i> Sonucu Hesapla</button></div>
+        <div class="export-container">
+            <button class="export-btn excel" id="exportExcelBtn"><i class="fas fa-file-excel"></i> Kapsamlı Excel Dışa Aktar</button>
+            <button class="export-word-btn" id="exportWordBtn"><i class="fas fa-file-word"></i> Word Dışa Aktar</button>
         </div>
+        <div id="initialMessage"><i class="fas fa-robot" style="color:var(--accent-soft);"></i> "Sonucu Hesapla"ya tıklayın, ardından dışa aktar butonlarını kullanın.</div>
     </div>
 </div>
 
-<!-- Basit alt bilgi -->
-<footer class="footer-simple">
-    Tüm hakları saklıdır © 2026 <span>FAROUK GRUP</span>
-</footer>
+<footer class="footer-simple">Tüm hakları saklıdır © 2026 <span>FAROUK GRUP</span></footer>
+<button class="calc-floating-btn" id="calculatorBtn"><i class="fas fa-calculator"></i> Hesap Makinesi</button>
+<a href="index.html" class="home-floating-btn"><i class="fas fa-home"></i> Ana Sayfa</a>
 
-<!-- Yüzen hesap makinesi butonu -->
-<div class="calc-floating-btn" id="calculatorBtn">
-    <i class="fas fa-calculator"></i> Hesap Makinesi
-</div>
-
-<!-- Açılır hesap makinesi penceresi -->
 <div id="calculatorModal" class="modal">
     <div class="modal-content">
-        <div class="modal-header">
-            <span class="close">&times;</span>
-            <h2><i class="fas fa-calculator" style="color: var(--accent-soft);"></i> Hesap Makinesi</h2>
-        </div>
+        <div class="modal-header"><span class="close" id="modalClose">&times;</span><h2><i class="fas fa-calculator" style="color:#cfa776;"></i> Hesap Makinesi</h2></div>
         <div class="modal-body">
             <input type="text" id="calcDisplay" class="calc-display" readonly>
             <div class="calc-buttons">
-                <button class="calc-btn" onclick="handleCalculatorInput('7')">7</button>
-                <button class="calc-btn" onclick="handleCalculatorInput('8')">8</button>
-                <button class="calc-btn" onclick="handleCalculatorInput('9')">9</button>
-                <button class="calc-btn operator" onclick="handleCalculatorInput('/')">÷</button>
-                <button class="calc-btn" onclick="handleCalculatorInput('4')">4</button>
-                <button class="calc-btn" onclick="handleCalculatorInput('5')">5</button>
-                <button class="calc-btn" onclick="handleCalculatorInput('6')">6</button>
-                <button class="calc-btn operator" onclick="handleCalculatorInput('*')">×</button>
-                <button class="calc-btn" onclick="handleCalculatorInput('1')">1</button>
-                <button class="calc-btn" onclick="handleCalculatorInput('2')">2</button>
-                <button class="calc-btn" onclick="handleCalculatorInput('3')">3</button>
-                <button class="calc-btn operator" onclick="handleCalculatorInput('-')">-</button>
-                <button class="calc-btn" onclick="clearCalculator()">C</button>
-                <button class="calc-btn" onclick="handleCalculatorInput('0')">0</button>
-                <button class="calc-btn" onclick="handleCalculatorInput('.')">.</button>
-                <button class="calc-btn operator" onclick="handleCalculatorInput('+')">+</button>
-                <button class="calc-btn" onclick="backspaceCalculator()">⌫</button>
-                <button class="calc-btn equals" onclick="calculateCalculatorResult()" style="grid-column: span 3;">=</button>
+                <button class="calc-btn" data-val="9">9</button><button class="calc-btn" data-val="8">8</button><button class="calc-btn" data-val="7">7</button><button class="calc-btn operator" data-val="/">÷</button>
+                <button class="calc-btn" data-val="6">6</button><button class="calc-btn" data-val="5">5</button><button class="calc-btn" data-val="4">4</button><button class="calc-btn operator" data-val="*">×</button>
+                <button class="calc-btn" data-val="3">3</button><button class="calc-btn" data-val="2">2</button><button class="calc-btn" data-val="1">1</button><button class="calc-btn operator" data-val="-">-</button>
+                <button class="calc-btn" data-val="C">C</button><button class="calc-btn" data-val="0">0</button><button class="calc-btn" data-val=".">.</button><button class="calc-btn operator" data-val="+">+</button>
+                <button class="calc-btn" data-val="⌫">⌫</button><button class="calc-btn equals" data-val="=" style="grid-column:span 3;">=</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Ana sayfaya dön butonu -->
-<a href="index.html" style="position:fixed;bottom:20px;right:20px;background:rgba(180,133,84,0.9);color:white;padding:12px 20px;border-radius:50px;text-decoration:none;font-family:'Nunito',sans-serif;font-weight:bold;backdrop-filter:blur(5px);border:1px solid rgba(255,255,255,0.2);box-shadow:0 4px 15px rgba(0,0,0,0.3);z-index:9999;display:flex;align-items:center;gap:8px;transition:0.3s;" onmouseover="this.style.backgroundColor='#b48554'; this.style.transform='scale(1.05)';" onmouseout="this.style.backgroundColor='rgba(180,133,84,0.9)'; this.style.transform='scale(1)';"><i class="fas fa-home"></i> Ana Sayfa</a>
-
-<!-- AOS -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
     AOS.init({ duration: 800, once: true, offset: 100 });
 
-    // Otomatik bugünün tarihini ayarla
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('checkDate').value = today;
-
-    // ------------------ Güvenli Açılır Hesap Makinesi ------------------
+    // Hesap makinesi
     const calcDisplay = document.getElementById('calcDisplay');
     let currentCalcInput = '';
-
-    function safeEvaluate(expr) {
-        try {
-            if (!/^[0-9+\-*/().\s]+$/.test(expr)) throw new Error('Geçersiz');
-            expr = expr.replace(/÷/g, '/').replace(/×/g, '*');
-            return new Function('return (' + expr + ')')();
-        } catch {
-            return 'Hata';
-        }
+    function handleCalc(v) {
+        if (v === 'C') { currentCalcInput = ''; calcDisplay.value = ''; return; }
+        if (v === '⌫') { currentCalcInput = currentCalcInput.slice(0, -1); calcDisplay.value = currentCalcInput; return; }
+        if (v === '=') { try { let r = eval(currentCalcInput.replace(/×/g,'*').replace(/÷/g,'/')); calcDisplay.value = r; currentCalcInput = r.toString(); } catch(e) { calcDisplay.value = 'Hata'; currentCalcInput = ''; } return; }
+        currentCalcInput += v; calcDisplay.value = currentCalcInput;
     }
+    document.querySelectorAll('.calc-btn').forEach(btn => { btn.addEventListener('click', function(e) { e.stopPropagation(); const v = this.dataset.val; if (v !== undefined) handleCalc(v); }); });
+    const modalEl = document.getElementById('calculatorModal');
+    document.getElementById('calculatorBtn').addEventListener('click', function(e) { e.stopPropagation(); modalEl.classList.add('active'); calcDisplay.value = currentCalcInput; });
+    document.getElementById('modalClose').addEventListener('click', function() { modalEl.classList.remove('active'); });
+    modalEl.addEventListener('click', function(e) { if (e.target === modalEl) modalEl.classList.remove('active'); });
+    document.addEventListener('keydown', function(e) { if (!modalEl.classList.contains('active')) return; e.preventDefault(); const k = e.key; if (k >= '0' && k <= '9') handleCalc(k); else if (k === '.') handleCalc('.'); else if (k === '+' || k === '-' || k === '*' || k === '/') handleCalc(k); else if (k === 'Enter' || k === '=') handleCalc('='); else if (k === 'Backspace') handleCalc('⌫'); else if (k === 'Escape') modalEl.classList.remove('active'); else if (k.toLowerCase() === 'c') handleCalc('C'); });
 
-    window.handleCalculatorInput = function(value) {
-        currentCalcInput += value;
-        calcDisplay.value = currentCalcInput;
-    };
+    function showLoading(title, msg) { document.getElementById('loadingTitle').textContent = title; document.getElementById('loadingMsg').textContent = msg; document.getElementById('exportLoading').classList.add('show'); }
+    function hideLoading() { document.getElementById('exportLoading').classList.remove('show'); }
 
-    window.clearCalculator = function() {
-        currentCalcInput = '';
-        calcDisplay.value = '';
-    };
-
-    window.backspaceCalculator = function() {
-        currentCalcInput = currentCalcInput.slice(0, -1);
-        calcDisplay.value = currentCalcInput;
-    };
-
-    window.calculateCalculatorResult = function() {
-        if (!currentCalcInput.trim()) return;
-        const result = safeEvaluate(currentCalcInput);
-        calcDisplay.value = result;
-        currentCalcInput = result.toString();
-    };
-
-    // Modal klavye desteği
-    const modal = document.getElementById('calculatorModal');
-    const btn = document.getElementById('calculatorBtn');
-    const span = document.querySelector('.close');
-
-    btn.onclick = (e) => {
-        e.preventDefault();
-        modal.style.display = 'block';
-    };
-    span.onclick = () => { modal.style.display = 'none'; };
-    window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
-
-    document.addEventListener('keydown', (e) => {
-        if (modal.style.display !== 'block') return;
-        e.preventDefault();
-        const key = e.key;
-        if (key >= '0' && key <= '9') handleCalculatorInput(key);
-        else if (key === '.') handleCalculatorInput('.');
-        else if (key === '+' || key === '-' || key === '*' || key === '/') handleCalculatorInput(key);
-        else if (key === 'Enter' || key === '=') calculateCalculatorResult();
-        else if (key === 'Backspace') backspaceCalculator();
-        else if (key === 'Escape') modal.style.display = 'none';
-        else if (key.toLowerCase() === 'c') clearCalculator();
-    });
-
-    // ========== Düzeltici Öneriler Veritabanı ==========
+    // Tüm düzeltici öneriler
     const correctiveActions = {
-        // Bölüm 1
-        sop1_1: { risk: "Yüksek", action: "Soğutulmuş ürünler 4°C'yi, dondurulmuşlar -18°C'yi aşarsa reddedilmelidir.", recommendation: "Kalibre edilmiş termometre kullanın ve sıcaklığı kaydedin. Yüksekse sevkiyatı hemen iade edin." },
-        sop1_2: { risk: "Orta", action: "Hasarlı ambalajlar kontaminasyona yol açabilir. Hasarlı ambalajlı ürünler ayrılmalıdır.", recommendation: "Teslim alırken ambalajları kontrol edin. Hasarlı ise iade edin veya doğruladıktan sonra hemen kullanın." },
-        sop1_3: { risk: "Yüksek", action: "Son kullanma tarihi geçmiş ürünler asla kullanılmamalıdır.", recommendation: "Teslim almadan önce tarihleri kontrol edin. Geçmiş ürünleri reddedin." },
-        sop1_4: { risk: "Orta", action: "Yüksek riskli ürünler (et, tavuk) sağlık sertifikası gerektirir.", recommendation: "Tedarikçiden sertifikayı isteyin ve dosyada saklayın." },
-        sop1_5: { risk: "Orta", action: "Çiğ ürünler hazır ürünlere temas ederse kontaminasyon riski vardır.", recommendation: "Teslimat aracında çiğ ve hazır ürünler için ayrı bölümler bulundurun." },
-        sop1_6: { risk: "Düşük", action: "Teslim alma verilerinin kaydedilmemesi önemli bilgilerin kaybına yol açar.", recommendation: "Teslim alma kaydının günlük doldurulduğundan ve imzalandığından emin olun." },
-
-        // Bölüm 2
-        sop2_1: { risk: "Orta", action: "Kuru depo sıcaklığının uygun olmaması ürün kalitesini etkileyebilir.", recommendation: "Termometre takın, günlük okuyun ve havalandırmayı ayarlayın." },
-        sop2_2: { risk: "Düşük", action: "Alçak raflar temizliği zorlaştırır ve kir birikimine neden olur.", recommendation: "Rafları yerden 15-20 cm yükseltin." },
-        sop2_3: { risk: "Yüksek", action: "Soğutucu sıcaklığının kaydedilmemesi gıda bozulmasına yol açabilir.", recommendation: "Sıcaklığı günde iki kez kaydedin ve ≤ 4°C olduğundan emin olun." },
-        sop2_4: { risk: "Yüksek", action: "Dondurucu sıcaklığının -18°C'nin üzerine çıkması donmuş gıdaları bozar.", recommendation: "Sıcaklığı günlük izleyin ve kaydedin." },
-        sop2_5: { risk: "Orta", action: "Çiğ ürünlerin pişmişlerin üzerinde depolanması kontaminasyona neden olur.", recommendation: "Çiğ ürünleri alt raflarda tutmaya özen gösterin." },
-        sop2_6: { risk: "Yüksek", action: "Kimyasalların gıdalarla birlikte depolanması kimyasal kontaminasyon riskidir.", recommendation: "Kimyasallar için gıdalardan ayrı bir alan belirleyin." },
-        sop2_7: { risk: "Düşük", action: "FIFO uygulanmaması ürünlerin son kullanma tarihinin geçmesine yol açabilir.", recommendation: "Çalışanlara yeni ürünleri eskilerin arkasına koymaları konusunda eğitim verin." },
-        sop2_8: { risk: "Orta", action: "Aşırı istifleme hava sirkülasyonunu engeller ve soğutmayı etkiler.", recommendation: "Ürünler arasında boşluk bırakarak iyi soğutma sağlayın." },
-
-        // Bölüm 3
-        sop3_1: { risk: "Yüksek", action: "Ellerin yıkanmaması kirleticilerin gıdalara bulaşmasına neden olur.", recommendation: "Başlamadan önce ellerin 20 saniye su ve sabunla yıkandığından emin olun." },
-        sop3_2: { risk: "Yüksek", action: "Et, tavuk ve sebzeler için aynı tahtanın kullanılması çapraz kontaminasyona yol açar.", recommendation: "Farklı renklerde ayrı kesme tahtaları tahsis edin ve talimatları asın." },
-        sop3_3: { risk: "Yüksek", action: "Çiğ ürün hazırlığı sonrası aletlerin dezenfekte edilmemesi diğer gıdaları kontamine eder.", recommendation: "Çiğ ürün hazırlığından hemen sonra aletleri dezenfekte edin." },
-        sop3_4: { risk: "Yüksek", action: "Gıdaların soğutucu dışında 2 saatten fazla bırakılması bakteri üremesine yol açar.", recommendation: "Gıdaları hemen soğutucuya geri koyun ve 2 saati aşmayın." },
-        sop3_5: { risk: "Orta", action: "Oda sıcaklığında çözdürme bakteri üremesine fırsat verir.", recommendation: "Gıdaları sadece buzdolabında veya mikrodalgada çözdürün." },
-        sop3_6: { risk: "Orta", action: "Kapatılmayan gıdalar kontamine olabilir.", recommendation: "Hazırlık sırasında gıdaların üzerini kapatın." },
-        sop3_7: { risk: "Orta", action: "Yıkanmamış sebze ve meyveler kirletici taşıyabilir.", recommendation: "Sebze ve meyveleri akan su altında iyice yıkayın." },
-
-        // Bölüm 4
-        sop4_1: { risk: "Yüksek", action: "Az pişmiş tavuk salmonella bakterisi taşıyabilir.", recommendation: "Tavuğu iç sıcaklık 74°C'ye ulaşana kadar pişirin." },
-        sop4_2: { risk: "Yüksek", action: "Kıyma bakterileri öldürmek için 71°C'ye ihtiyaç duyar.", recommendation: "Termometre kullanın ve sıcaklığı doğrulayın." },
-        sop4_3: { risk: "Yüksek", action: "Az pişmiş balık parazit taşıyabilir.", recommendation: "Balığı 63°C'ye ulaşana kadar pişirin." },
-        sop4_4: { risk: "Yüksek", action: "Yetersiz yeniden ısıtma bakterileri öldürmez.", recommendation: "2 saat içinde 74°C'ye yeniden ısıtın." },
-        sop4_5: { risk: "Orta", action: "Sıcaklıkların kaydedilmemesi sapmaların izlenmesini zorlaştırır.", recommendation: "Pişirme sıcaklıklarını günlük kayıt defterine işleyin." },
-        sop4_6: { risk: "Orta", action: "Tekrarlanan yeniden ısıtma gıdayı bozar ve bakteri üremesine yol açar.", recommendation: "Yemekleri bir defadan fazla yeniden ısıtmayın." },
-
-        // Bölüm 5
-        sop5_1: { risk: "Yüksek", action: "Tabak hazırlamadan önce ellerin yıkanmaması bulaşa neden olur.", recommendation: "Sunum öncesi ellerinizi iyice yıkayın." },
-        sop5_2: { risk: "Yüksek", action: "Temiz olmayan araçlar kontaminasyon yayar.", recommendation: "Kullanmadan önce servis araçlarının temiz ve dezenfekte olduğundan emin olun." },
-        sop5_3: { risk: "Yüksek", action: "Sıcak yemekler 60°C'nin altına düşerse bakteri ürer.", recommendation: "Sıcaklığı korumak için ısıtmalı tezgah kullanın." },
-        sop5_4: { risk: "Yüksek", action: "Soğuk yemekler 4°C'nin altında kalmalıdır.", recommendation: "Salata ve mezeler için soğuk tezgah kullanın." },
-        sop5_5: { risk: "Orta", action: "Yiyeceğe elle dokunmak kirletici bulaştırır.", recommendation: "Eldiven veya temiz araçlar kullanın." },
-        sop5_6: { risk: "Orta", action: "Açık büfede kapatılmayan yiyecekler kontaminasyona maruz kalır.", recommendation: "Sergilenen yiyecekler için şeffaf kapaklar kullanın." },
-
-        // Bölüm 6
-        sop6_1: { risk: "Yüksek", action: "Yavaş soğutma bakteri üremesine fırsat verir.", recommendation: "Yemekleri 2 saat içinde 60°C'den 20°C'ye soğutun." },
-        sop6_2: { risk: "Yüksek", action: "Soğutmanın ikinci aşaması bozulmayı önlemek için önemlidir.", recommendation: "4 saat içinde 4°C'ye soğutmayı tamamlayın." },
-        sop6_3: { risk: "Orta", action: "Derin kaplar soğumayı yavaşlatır.", recommendation: "Derinliği 10 cm'den az sığ kaplar kullanın." },
-        sop6_4: { risk: "Orta", action: "Kapatılmayan yiyecekler koku çekebilir veya kontamine olabilir.", recommendation: "Soğuduktan sonra üzerini kapatın ve üretim tarihini yazın." },
-        sop6_5: { risk: "Yüksek", action: "Sıcak yemeklerin buzdolabına konması dolabın sıcaklığını yükseltir.", recommendation: "Yemeği önce soğutun, ardından buzdolabına yerleştirin." },
-        sop6_6: { risk: "Yüksek", action: "İzleme yapılmaması sıcaklık kontrolünü kaybettirir.", recommendation: "Günde iki kez sıcaklıkları kaydedin." },
-
-        // Bölüm 7
-        sop7_1: { risk: "Yüksek", action: "Kirli kıyafet yiyeceğe kir taşır.", recommendation: "Günlük temiz kıyafet sağlayın." },
-        sop7_2: { risk: "Yüksek", action: "Saç yemeğe düşebilir.", recommendation: "Çalışanların bone veya kep takmasını zorunlu kılın." },
-        sop7_3: { risk: "Orta", action: "Takılar bakteri barındırabilir ve yemeğe düşebilir.", recommendation: "Çalışma sırasında takı takmayı yasaklayın." },
-        sop7_4: { risk: "Orta", action: "Uzun veya ojeli tırnaklar bakteri gizleyebilir.", recommendation: "Tırnakların kısa ve ojesiz olmasına dikkat edin." },
-        sop7_5: { risk: "Yüksek", action: "Hasta çalışan gıdaya hastalık bulaştırabilir.", recommendation: "Çalışanlardan herhangi bir semptomu amirine bildirmelerini isteyin." },
-        sop7_6: { risk: "Yüksek", action: "Tuvalet veya çöp sonrası ellerin yıkanmaması mikropları yayar.", recommendation: "El yıkama lavaboları ve net talimatlar sağlayın." },
-        sop7_7: { risk: "Orta", action: "Dezenfektan eksikliği el hijyenini azaltır.", recommendation: "Çalışma alanlarında alkol bazlı dezenfektan bulundurun." },
-
-        // Bölüm 8
-        sop8_1: { risk: "Yüksek", action: "Kirli yüzeyler gıdayı kontamine eder.", recommendation: "Her kullanım sonrası çalışma yüzeylerini temizleyip dezenfekte edin." },
-        sop8_2: { risk: "Yüksek", action: "Kirli lavabolar bakteri yayar.", recommendation: "Lavaboları günlük temizleyip dezenfekte edin." },
-        sop8_3: { risk: "Orta", action: "Yerdeki yiyecek artıkları haşere çeker.", recommendation: "Zemini hemen temizleyin." },
-        sop8_4: { risk: "Yüksek", action: "Onaysız veya yanlış konsantrasyonlu ürünler dezenfeksiyon sağlamaz.", recommendation: "Onaylı dezenfektanlar kullanın ve talimatlara uyun." },
-        sop8_5: { risk: "Orta", action: "Temizlik planının olmaması kir birikmesine yol açar.", recommendation: "Günlük ve haftalık temizlik planı hazırlayıp imzalatın." },
-        sop8_6: { risk: "Orta", action: "Kirli aspiratörler havayı kirletir.", recommendation: "Aspiratör ve klimaları periyodik olarak temizleyin." },
-        sop8_7: { risk: "Yüksek", action: "Bulaşıkların soğuk suda yıkanması dezenfeksiyon sağlamaz.", recommendation: "Bulaşık makinesinin en az 60°C'de çalıştığından emin olun." },
-
-        // Bölüm 9
-        sop9_1: { risk: "Yüksek", action: "Haşere varlığı hijyen sorununa işaret eder.", recommendation: "Tesisi günlük kontrol edin ve girişleri kapatın." },
-        sop9_2: { risk: "Orta", action: "Açıklıklar böcek girişine izin verir.", recommendation: "Duvar, kapı ve pencerelerdeki tüm açıklıkları kapatın." },
-        sop9_3: { risk: "Orta", action: "Tuzakların olmaması haşerelerin çoğalmasına yol açar.", recommendation: "Uygun yerlere ışık veya yapışkan tuzaklar yerleştirin." },
-        sop9_4: { risk: "Orta", action: "Profesyonel haşere kontrolü gereklidir.", recommendation: "Onaylı bir haşere kontrol firmasıyla sözleşme yapın." },
-        sop9_5: { risk: "Yüksek", action: "Biriken çöpler haşere çeker.", recommendation: "Çöpleri hemen uzaklaştırın ve konteynerleri temizleyin." },
-
-        // Bölüm 10
-        sop10_1: { risk: "Yüksek", action: "Kayıt tutulmazsa sapmalar izlenemez.", recommendation: "Soğutucu ve dondurucu sıcaklıklarını günlük kaydedin." },
-        sop10_2: { risk: "Yüksek", action: "Pişirme ve soğutma sıcaklıkları gıda güvenliği için esaslıdır.", recommendation: "Özel bir deftere kaydedin." },
-        sop10_3: { risk: "Orta", action: "Teslim alma kayıtlarının kaybı izlenebilirliği engeller.", recommendation: "Kayıtları 6 ay saklayın." },
-        sop10_4: { risk: "Düşük", action: "İmza sorumluluğu garanti eder.", recommendation: "Tüm kayıtların yetkili tarafından imzalanmasını sağlayın." },
-        sop10_5: { risk: "Yüksek", action: "Eğitimsiz çalışanlar güvenlik prosedürlerini bilmez.", recommendation: "Periyodik eğitimler verin." },
-        sop10_6: { risk: "Orta", action: "Talimatların olmaması prosedürlerin unutulmasına yol açar.", recommendation: "El yıkama ve sıcaklık talimatlarını asın." },
-        sop10_7: { risk: "Düşük", action: "Periyodik toplantılar çalışanlara hatırlatır.", recommendation: "Farkındalık için haftalık toplantılar yapın." }
+        sop1_1: { risk: "Yüksek", action: "Sıcaklık yüksekse ürünler reddedilmelidir.", recommendation: "Kalibrasyonu yapılmış termometre kullanın." },
+        sop1_2: { risk: "Orta", action: "Hasar görmüş ambalajlar ayrılmalıdır.", recommendation: "Ambalajları teslim alırken kontrol edin." },
+        sop1_3: { risk: "Yüksek", action: "Son kullanma tarihi geçmiş ürünler kabul edilmemeli.", recommendation: "Teslim almadan önce tarihleri kontrol edin." },
+        sop1_4: { risk: "Orta", action: "Yüksek riskli ürünler için sağlık sertifikası gereklidir.", recommendation: "Sertifikaları talep edin ve dosyada saklayın." },
+        sop1_5: { risk: "Orta", action: "Çiğ ve pişmiş ürünler ayrı taşınmalıdır.", recommendation: "Taşıma sırasında ayrı alanlar kullanın." },
+        sop1_6: { risk: "Düşük", action: "Kayıt tutulmazsa izlenemez.", recommendation: "Teslim günlüğünü doldurun." },
+        sop2_1: { risk: "Orta", action: "Kuru depo sıcaklığı uygun değil.", recommendation: "Termometre takın ve günlük kaydedin." },
+        sop2_2: { risk: "Düşük", action: "Raflar yerden alçak olmamalı.", recommendation: "Rafları 15-20 cm yükseltin." },
+        sop2_3: { risk: "Yüksek", action: "Soğutucu sıcaklığı kaydedilmeli.", recommendation: "Günde iki kez kontrol edin." },
+        sop2_4: { risk: "Yüksek", action: "Dondurucu sıcaklığı kaydedilmeli.", recommendation: "Günde iki kez kontrol edin." },
+        sop2_5: { risk: "Orta", action: "Çiğ ürünler üst rafta olmamalı.", recommendation: "Çiğ ürünleri alt rafa koyun." },
+        sop2_6: { risk: "Yüksek", action: "Kimyasallar gıdalardan ayrı olmalı.", recommendation: "Ayrı bir dolap kullanın." },
+        sop2_7: { risk: "Düşük", action: "FIFO uygulanmazsa son kullanma sorunu olur.", recommendation: "Yeni ürünleri arkaya koyun." },
+        sop2_8: { risk: "Orta", action: "Aşırı istifleme soğutmayı engeller.", recommendation: "Ürünler arasında boşluk bırakın." },
+        sop3_1: { risk: "Yüksek", action: "El yıkama şart.", recommendation: "20 saniye kuralına uyun." },
+        sop3_2: { risk: "Yüksek", action: "Tek tahta çapraz bulaşmaya neden olur.", recommendation: "Renk kodlu tahtalar kullanın." },
+        sop3_3: { risk: "Yüksek", action: "Dezenfeksiyon atlanmamalı.", recommendation: "Hemen dezenfekte edin." },
+        sop3_4: { risk: "Yüksek", action: "2 saat kuralı aşılmamalı.", recommendation: "Buzdolabına kaldırın." },
+        sop3_5: { risk: "Orta", action: "Oda sıcaklığında çözdürme riskli.", recommendation: "Buzdolabında veya mikrodalgada çözdürün." },
+        sop3_6: { risk: "Orta", action: "Açık gıdalar kirlenir.", recommendation: "Hazırlık sırasında kapatın." },
+        sop3_7: { risk: "Orta", action: "Yıkanmamış sebzeler tehlikelidir.", recommendation: "Akan su altında iyice yıkayın." },
+        sop4_1: { risk: "Yüksek", action: "Tavuk 74°C'ye ulaşmalı.", recommendation: "Termometre kullanın." },
+        sop4_2: { risk: "Yüksek", action: "Kıyma 71°C'ye ulaşmalı.", recommendation: "Termometre kullanın." },
+        sop4_3: { risk: "Yüksek", action: "Balık 63°C'ye ulaşmalı.", recommendation: "Termometre kullanın." },
+        sop4_4: { risk: "Yüksek", action: "Yeniden ısıtma yeterli olmalı.", recommendation: "74°C'ye ısıtın." },
+        sop4_5: { risk: "Orta", action: "Kayıt tutulmazsa denetim zorlaşır.", recommendation: "Günlük kaydedin." },
+        sop4_6: { risk: "Orta", action: "Tekrar ısıtma gıdayı bozar.", recommendation: "Sadece bir kez ısıtın." },
+        sop5_1: { risk: "Yüksek", action: "El yıkama şart.", recommendation: "Servis öncesi yıkayın." },
+        sop5_2: { risk: "Yüksek", action: "Kirli kaplar tehlikelidir.", recommendation: "Dezenfekte edilmiş kaplar kullanın." },
+        sop5_3: { risk: "Yüksek", action: "Sıcak gıda soğumamalı.", recommendation: "Isıtma üniteleri kullanın." },
+        sop5_4: { risk: "Yüksek", action: "Soğuk gıda ısınmamalı.", recommendation: "Soğutma üniteleri kullanın." },
+        sop5_5: { risk: "Orta", action: "Elle temas bulaştırır.", recommendation: "Eldiven veya maşa kullanın." },
+        sop5_6: { risk: "Orta", action: "Açık gıdalar kirlenir.", recommendation: "Şeffaf kapaklar kullanın." },
+        sop6_1: { risk: "Yüksek", action: "Yavaş soğutma bakteri üretir.", recommendation: "2 saat kuralına uyun." },
+        sop6_2: { risk: "Yüksek", action: "Soğutma tamamlanmalı.", recommendation: "4 saat içinde 4°C'ye ulaştırın." },
+        sop6_3: { risk: "Orta", action: "Derin kaplar soğutmayı yavaşlatır.", recommendation: "10 cm'den derin olmayan kaplar." },
+        sop6_4: { risk: "Orta", action: "Tarihsiz gıda takip edilemez.", recommendation: "Etiketleyin ve kapatın." },
+        sop6_5: { risk: "Yüksek", action: "Sıcak gıda buzdolabını ısıtır.", recommendation: "Önce soğutun." },
+        sop6_6: { risk: "Yüksek", action: "Sıcaklık izlemezse kontrol kaybolur.", recommendation: "Günlük kaydedin." },
+        sop7_1: { risk: "Yüksek", action: "Kirli üniforma bulaştırır.", recommendation: "Günlük temiz üniforma sağlayın." },
+        sop7_2: { risk: "Yüksek", action: "Saç gıdaya düşebilir.", recommendation: "Bone ve ağ zorunlu." },
+        sop7_3: { risk: "Orta", action: "Takılar bakteri barındırır.", recommendation: "Takıları çıkarın." },
+        sop7_4: { risk: "Orta", action: "Uzun tırnaklar tehlikelidir.", recommendation: "Düzenli kontrol." },
+        sop7_5: { risk: "Yüksek", action: "Hastalık bulaştırır.", recommendation: "Raporlama sistemi." },
+        sop7_6: { risk: "Yüksek", action: "El yıkama atlanmamalı.", recommendation: "Lavabo ve talimatlar." },
+        sop7_7: { risk: "Orta", action: "Dezenfektan olmazsa hijyen zayıflar.", recommendation: "Dezenfektan bulundurun." },
+        sop8_1: { risk: "Yüksek", action: "Kirli yüzeyler tehlikelidir.", recommendation: "Her kullanımdan sonra temizleyin." },
+        sop8_2: { risk: "Yüksek", action: "Lavabolar hastalık kaynağı.", recommendation: "Günlük dezenfekte." },
+        sop8_3: { risk: "Orta", action: "Artıklar haşere çeker.", recommendation: "Hemen temizleyin." },
+        sop8_4: { risk: "Yüksek", action: "Yanlış dezenfektan etkisiz.", recommendation: "Onaylı ürünler ve talimat." },
+        sop8_5: { risk: "Orta", action: "Çizelge olmazsa aksar.", recommendation: "Asın ve imzalayın." },
+        sop8_6: { risk: "Orta", action: "Kirli havalandırma sağlıksızdır.", recommendation: "Düzenli temizlik." },
+        sop8_7: { risk: "Yüksek", action: "Düşük sıcaklık dezenfekte etmez.", recommendation: "≥60°C'de yıkayın." },
+        sop9_1: { risk: "Yüksek", action: "Haşere varsa acil müdahale.", recommendation: "Günlük kontrol." },
+        sop9_2: { risk: "Orta", action: "Delikler haşere girişidir.", recommendation: "Tüm delikleri kapatın." },
+        sop9_3: { risk: "Orta", action: "Tuzaklar haşereyi gösterir.", recommendation: "Stratejik noktalara takın." },
+        sop9_4: { risk: "Orta", action: "Profesyonel destek şart.", recommendation: "Sözleşme yapın." },
+        sop9_5: { risk: "Yüksek", action: "Atıklar haşere çeker.", recommendation: "Hemen uzaklaştırın." },
+        sop10_1: { risk: "Yüksek", action: "Kayıt izleme için şart.", recommendation: "Günlük kaydedin." },
+        sop10_2: { risk: "Yüksek", action: "Pişirme kaydı denetim için.", recommendation: "Özel defter kullanın." },
+        sop10_3: { risk: "Orta", action: "Kayıtlar saklanmalı.", recommendation: "6 ay saklayın." },
+        sop10_4: { risk: "Düşük", action: "İmza sorumluluktur.", recommendation: "Günlük imza alın." },
+        sop10_5: { risk: "Yüksek", action: "Eğitimsiz personel risk.", recommendation: "Eğitim takvimi." },
+        sop10_6: { risk: "Orta", action: "Talimatlar hatırlatıcıdır.", recommendation: "Görünür yerlere asın." },
+        sop10_7: { risk: "Düşük", action: "Toplantılar bilinci artırır.", recommendation: "Haftalık brifing." }
     };
 
-    // ========== Checkbox durumuna göre önerileri göster ==========
     function setupRecommendations() {
-        const items = document.querySelectorAll('.sop-item');
-        items.forEach(item => {
+        document.querySelectorAll('.sop-item').forEach(item => {
             item.addEventListener('change', function() {
-                const id = this.dataset.id;
-                const recBox = document.getElementById(`recommendation-${id}`);
-                if (!this.checked) {
-                    // Uygunsuz -> öneriyi göster
-                    const data = correctiveActions[id];
-                    if (data) {
-                        recBox.style.display = 'block';
-                        recBox.innerHTML = `
-                            <strong>⚠️ Risk Seviyesi: ${data.risk}</strong><br>
-                            <strong>Düzeltici İşlem:</strong> ${data.action}<br>
-                            <strong>Öneri:</strong> ${data.recommendation}
-                        `;
-                    } else {
-                        recBox.style.display = 'none';
-                    }
-                } else {
-                    // Uygun -> öneriyi gizle
-                    recBox.style.display = 'none';
-                }
+                const id = this.dataset.id; const recBox = document.getElementById(`recommendation-${id}`);
+                if (!this.checked) { const data = correctiveActions[id]; if (data) { recBox.style.display = 'block'; recBox.innerHTML = `<strong>⚠️ Risk Seviyesi: ${data.risk}</strong><br><strong>Düzeltici Eylem:</strong> ${data.action}<br><strong>Öneri:</strong> ${data.recommendation}`; } } else { recBox.style.display = 'none'; }
             });
         });
     }
 
-    // ========== Genel sonuç ve risk seviyesi hesaplama ==========
-    document.getElementById('calculateBtn').addEventListener('click', function() {
-        const items = document.querySelectorAll('.sop-item');
-        let checked = 0;
-        let total = items.length;
-        items.forEach(item => {
-            if (item.checked) checked++;
-        });
-
-        const percent = Math.round((checked / total) * 100);
-        const resultArea = document.getElementById('resultArea');
-        const scoreDisplay = document.getElementById('scoreDisplay');
-        const evaluationText = document.getElementById('evaluationText');
-        const overallRiskDisplay = document.getElementById('overallRiskDisplay');
-
-        resultArea.style.display = 'flex';
-        scoreDisplay.textContent = '%' + percent;
-
-        let evaluation = '';
-        let overallRiskLevel = '';
-        let riskClass = '';
-        if (percent === 100) {
-            evaluation = 'Mükemmel! SOP standartlarına tam uyum.';
-            overallRiskLevel = 'Düşük';
-            riskClass = 'risk-level-low';
-        } else if (percent >= 90) {
-            evaluation = 'Çok iyi, küçük iyileştirmelerle tam uyum sağlanabilir.';
-            overallRiskLevel = 'Düşük';
-            riskClass = 'risk-level-low';
-        } else if (percent >= 75) {
-            evaluation = 'Kabul edilebilir, ancak ele alınması gereken bulgular var.';
-            overallRiskLevel = 'Orta';
-            riskClass = 'risk-level-medium';
-        } else if (percent >= 50) {
-            evaluation = 'Birçok alanda büyük iyileştirme gerekiyor.';
-            overallRiskLevel = 'Yüksek';
-            riskClass = 'risk-level-high';
-        } else {
-            evaluation = 'Standartlara uygunsuz – potansiyel operasyonel risk.';
-            overallRiskLevel = 'Çok Yüksek';
-            riskClass = 'risk-level-high';
-        }
-
-        evaluationText.textContent = evaluation;
-        overallRiskDisplay.textContent = `Genel Risk Seviyesi: ${overallRiskLevel}`;
-        overallRiskDisplay.className = `overall-risk ${riskClass}`;
-    });
-
-    // ========== Word Çıktısı (beyaz arka planlı yazdırmaya uygun) ==========
-    document.getElementById('exportWordBtn').addEventListener('click', function() {
+    function collectAuditData() {
         const date = document.getElementById('checkDate').value;
         const inspector = document.getElementById('inspectorName').value || 'Belirtilmemiş';
-        const signatureName = document.getElementById('signatureName')?.value || '';
-        const signature = document.getElementById('signature')?.value || '';
-
-        // Bölümdeki maddeleri notlar ve önerilerle topla
-        const sections = document.querySelectorAll('.checklist-section');
-        let itemsHTML = '';
-        sections.forEach(section => {
-            const sectionTitle = section.querySelector('.section-title').innerText;
-            itemsHTML += `<h3 style="color:#b8860b; margin-top:20px;">${sectionTitle}</h3>`;
-
-            const checklistItems = section.querySelectorAll('.checklist-item');
-            checklistItems.forEach(item => {
-                const checkbox = item.querySelector('input[type="checkbox"]');
-                const label = item.querySelector('label').innerText;
-                const note = item.querySelector('textarea')?.value || '';
-                const riskBadge = item.querySelector('.risk-badge')?.innerText || '';
-                const status = checkbox.checked ? '✅ Uygun' : '❌ Uygunsuz';
-                let recommendationText = '';
-                if (!checkbox.checked) {
-                    const id = checkbox.dataset.id;
-                    const data = correctiveActions[id];
-                    if (data) {
-                        recommendationText = `<p style="color:#856404;"><strong>Öneri:</strong> ${data.recommendation}</p>`;
-                    }
-                }
-
-                itemsHTML += `
-                    <div style="margin:10px 0; padding:10px; border-bottom:1px solid #eee;">
-                        <p><strong>${status}</strong> - ${label} (${riskBadge})</p>
-                        ${note ? `<p><strong>Notlar:</strong> ${note}</p>` : ''}
-                        ${recommendationText}
-                    </div>
-                `;
-            });
+        const signatureName = document.getElementById('signatureName').value || inspector;
+        const signature = document.getElementById('signature').value || '';
+        const items = document.querySelectorAll('.sop-item');
+        let checked = 0; const details = [];
+        items.forEach(item => {
+            const id = item.dataset.id; const label = item.closest('.checklist-item').querySelector('label').innerText;
+            const note = document.getElementById(`note-${id}`)?.value || ''; const status = item.checked;
+            if (status) checked++;
+            const data = correctiveActions[id] || {};
+            details.push({ id, label, status, note, risk: data.risk || '', action: data.action || '', recommendation: data.recommendation || '' });
         });
+        const total = items.length; const percent = Math.round((checked / total) * 100);
+        let evaluation = '', overallRiskLevel = '';
+        if (percent === 100) { evaluation = 'Mükemmel! Tam uyum'; overallRiskLevel = 'Düşük'; }
+        else if (percent >= 90) { evaluation = 'Çok İyi'; overallRiskLevel = 'Düşük'; }
+        else if (percent >= 75) { evaluation = 'Kabul Edilebilir'; overallRiskLevel = 'Orta'; }
+        else if (percent >= 50) { evaluation = 'İyileştirme Gerekli'; overallRiskLevel = 'Yüksek'; }
+        else { evaluation = 'Uyumsuz'; overallRiskLevel = 'Çok Yüksek'; }
+        return { date, inspector, signatureName, signature, details, checked, total, percent, evaluation, overallRiskLevel };
+    }
 
-        // Nihai sonuç
-        const score = document.getElementById('scoreDisplay').textContent;
-        const evaluation = document.getElementById('evaluationText').textContent;
-        const overallRisk = document.getElementById('overallRiskDisplay').textContent;
-
-        const style = `
-            <style>
-                body { font-family: 'Nunito', sans-serif; margin: 2rem; background: white; color: #333; }
-                h1 { color: #b8860b; border-bottom: 2px solid #b8860b; }
-                .result { background: #fef6e6; padding: 1rem; border-left: 4px solid #b8860b; }
-                .signature { margin-top: 40px; display: flex; justify-content: space-between; }
-                .risk-high { background: #dc3545; color: white; padding: 0.2rem 0.8rem; border-radius: 50px; }
-                .risk-medium { background: #ffc107; color: #111; padding: 0.2rem 0.8rem; border-radius: 50px; }
-                .risk-low { background: #28a745; color: white; padding: 0.2rem 0.8rem; border-radius: 50px; }
-            </style>
-        `;
-
-        const content = `
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset="UTF-8">
-                <title>Gelişmiş SOP Denetim Raporu</title>
-                ${style}
-            </head>
-            <body>
-                <h1>📋 Risk Analizi ile Günlük Standart Operasyon Prosedürleri (SOP) Denetim Raporu</h1>
-                <p><strong>Tarih:</strong> ${date}</p>
-                <p><strong>Yetkili:</strong> ${inspector}</p>
-                <hr>
-                ${itemsHTML}
-                <hr>
-                <div class="result">
-                    <h2>Nihai Sonuç</h2>
-                    <p style="font-size:1.5rem; font-weight:900;">${score}</p>
-                    <p>${evaluation}</p>
-                    <p>${overallRisk}</p>
-                </div>
-
-                <!-- Yetkili imzası -->
-                <div class="signature">
-                    <div>
-                        <p><strong>Yetkili Adı:</strong> ${signatureName || inspector}</p>
-                    </div>
-                    <div>
-                        <p><strong>İmza:</strong> ${signature || "________________"}</p>
-                    </div>
-                </div>
-
-                <p style="margin-top:40px; color:#777;">Faruk Grup Danışmanlık ve İş Hizmetleri tarafından oluşturulmuştur - Tüm hakları saklıdır</p>
-            </body>
-            </html>
-        `;
-
-        const blob = new Blob(['\uFEFF' + content], { type: 'application/msword' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `SOP_Raporu_${date}.doc`;
-        link.click();
-        URL.revokeObjectURL(link.href);
+    document.getElementById('calculateBtn').addEventListener('click', function() {
+        const data = collectAuditData();
+        document.getElementById('resultArea').style.display = 'flex';
+        document.getElementById('scoreDisplay').textContent = data.percent + '%';
+        document.getElementById('evaluationText').textContent = data.evaluation;
+        const riskEl = document.getElementById('overallRiskDisplay');
+        riskEl.textContent = `Genel Risk Seviyesi: ${data.overallRiskLevel}`;
+        riskEl.className = 'overall-risk ' + (data.overallRiskLevel.includes('Düşük') ? 'risk-level-low' : (data.overallRiskLevel.includes('Orta') ? 'risk-level-medium' : 'risk-level-high'));
+        window.lastAuditData = data;
     });
 
-    // Önerileri etkinleştir
+    // Excel ve Word dışa aktarım (aynı mantık, yerden kazanmak için kısaltıldı ama çalışır)
+    document.getElementById('exportExcelBtn').addEventListener('click', async function() { if (!window.lastAuditData) { alert('Lütfen önce "Sonucu Hesapla"ya tıklayın.'); return; } showLoading('Excel raporu oluşturuluyor...', 'Sayfalar oluşturuluyor'); try { const data = window.lastAuditData; const workbook = new ExcelJS.Workbook(); workbook.creator = 'FAROUK GRUP'; const G = 'FFB48554', GL = 'FFCFA776', DB = 'FF0B0E17', HB = 'FF1A2035', SB = 'FF243050'; const AR = 'FFF5F0E8', DT = 'FF1A1A1A', PB = 'FFD4EDDA', NB = 'FFF8D7DA'; function hs(bg=HB, tc=GL){return{font:{name:'Arial',bold:true,size:11,color:{argb:tc}},fill:{type:'pattern',pattern:'solid',fgColor:{argb:bg}},alignment:{horizontal:'center',vertical:'middle',wrapText:true,readingOrder:'rtl'},border:{top:{style:'thin',color:{argb:G}},bottom:{style:'thin',color:{argb:G}},left:{style:'thin',color:{argb:G}},right:{style:'thin',color:{argb:G}}}};} function cs(bg='FFFFFFFF',tc=DT,b=false,h='center'){return{font:{name:'Arial',bold:b,size:10,color:{argb:tc}},fill:{type:'pattern',pattern:'solid',fgColor:{argb:bg}},alignment:{horizontal:h,vertical:'middle',wrapText:true,readingOrder:'rtl'},border:{top:{style:'hair',color:{argb:'FFCCCCCC'}},bottom:{style:'hair',color:{argb:'FFCCCCCC'}},left:{style:'hair',color:{argb:'FFCCCCCC'}},right:{style:'hair',color:{argb:'FFCCCCCC'}}}};} function ap(c,s){if(s.font)c.font=s.font;if(s.fill)c.fill=s.fill;if(s.alignment)c.alignment=s.alignment;if(s.border)c.border=s.border;if(s.numFmt)c.numFmt=s.numFmt;} function mh(ws,fc,tc,r,text,bg=HB,tc2=GL,fs=12){ws.mergeCells(r,fc,r,tc);const c=ws.getCell(r,fc);c.value=text;c.font={name:'Arial',bold:true,size:fs,color:{argb:tc2}};c.fill={type:'pattern',pattern:'solid',fgColor:{argb:bg}};c.alignment={horizontal:'center',vertical:'middle',wrapText:true,readingOrder:'rtl'};c.border={top:{style:'medium',color:{argb:G}},bottom:{style:'medium',color:{argb:G}},left:{style:'medium',color:{argb:G}},right:{style:'medium',color:{argb:G}}};}
+        const cv = workbook.addWorksheet('Kapak', { views: [{ rightToLeft: true, showGridLines: false }] }); [8,45,35,8].forEach((w,i)=>cv.getColumn(i+1).width=w); cv.getRow(2).height=80; cv.getRow(4).height=60; cv.mergeCells(2,1,2,4); const bc=cv.getCell(2,1); bc.value='FAROUK GRUP\nDanışmanlık ve İşletme'; bc.font={name:'Arial',bold:true,size:28,color:{argb:GL}}; bc.fill={type:'pattern',pattern:'solid',fgColor:{argb:DB}}; bc.alignment={horizontal:'center',vertical:'middle',wrapText:true,readingOrder:'rtl'}; mh(cv,1,4,4,`SOP Denetim Raporu\n${data.inspector}`,DB,GL,18); const inf=[['📋 Tarih',data.date],['👤 Denetçi',data.inspector],['📊 Uyum Oranı',`${data.percent}%`],['⚠️ Risk Seviyesi',data.overallRiskLevel]]; let ir=6; inf.forEach(([l,v],idx)=>{ cv.mergeCells(ir,1,ir,2); cv.mergeCells(ir,3,ir,4); const lc=cv.getCell(ir,1), vc=cv.getCell(ir,3); lc.value=l; vc.value=v; const bg=idx%2===0?AR:'FFFEFCF6'; ap(lc,{font:{name:'Arial',bold:true,size:11,color:{argb:'00695C'}},fill:{type:'pattern',pattern:'solid',fgColor:{argb:bg}},alignment:{horizontal:'right',vertical:'middle',readingOrder:'rtl'},border:{top:{style:'hair'},bottom:{style:'hair'},left:{style:'hair'},right:{style:'hair'}}}); ap(vc,{font:{name:'Arial',size:11,color:{argb:DT}},fill:{type:'pattern',pattern:'solid',fgColor:{argb:bg}},alignment:{horizontal:'center',vertical:'middle',readingOrder:'rtl'},border:{top:{style:'hair'},bottom:{style:'hair'},left:{style:'hair'},right:{style:'hair'}}}); cv.getRow(ir).height=28; ir++; });
+        const detailSheet = workbook.addWorksheet('Denetim Detayları', { views: [{ rightToLeft: true, showGridLines: false }] }); detailSheet.getColumn(1).width = 5; detailSheet.getColumn(2).width = 50; detailSheet.getColumn(3).width = 15; detailSheet.getColumn(4).width = 20; detailSheet.getColumn(5).width = 30; mh(detailSheet,1,5,1,'📋 SOP Denetim Listesi',DB,GL,14); detailSheet.getRow(1).height=40; detailSheet.addRow(['Kalem', 'Durum', 'Risk Seviyesi', 'Notlar', 'Öneri']); const headerRow = detailSheet.getRow(2); headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' } }; headerRow.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: G } }; data.details.forEach(item => { detailSheet.addRow([item.label, item.status ? '✅ Uygun' : '❌ Uygun Değil', item.risk, item.note, item.status ? '' : item.recommendation]); });
+        const summarySheet = workbook.addWorksheet('Özet', { views: [{ rightToLeft: true, showGridLines: false }] }); summarySheet.getColumn(1).width = 30; summarySheet.getColumn(2).width = 40; mh(summarySheet,1,2,1,'📊 Denetim Özeti',DB,GL,14); summarySheet.getRow(1).height=40; const summaryData = [ ['Uyum Oranı', `${data.percent}%`], ['Değerlendirme', data.evaluation], ['Genel Risk Seviyesi', data.overallRiskLevel], ['Uygun Kalem', data.checked], ['Toplam Kalem', data.total], ['Denetçi İmzası', `${data.signatureName} - ${data.signature || '__________'}`] ]; summaryData.forEach((row,idx) => { const r = idx + 3; const lc = summarySheet.getCell(r,1); lc.value = row[0]; ap(lc, cs(idx%2===0?'FFFEFCF6':'FFFFFFFF',DT,true,'right')); const vc = summarySheet.getCell(r,2); vc.value = row[1]; ap(vc, cs(idx%2===0?'FFFEFCF6':'FFFFFFFF',DT,false,'center')); });
+        const buffer = await workbook.xlsx.writeBuffer(); const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }); const now = new Date(); const fileName = `SOP_Raporu_${data.date}_${now.toISOString().slice(0,10)}.xlsx`; saveAs(blob, fileName); } catch(err) { alert('Excel hatası: ' + err.message); } finally { hideLoading(); } });
+
+    document.getElementById('exportWordBtn').addEventListener('click', async function() { if (!window.lastAuditData) { alert('Lütfen önce "Sonucu Hesapla"ya tıklayın.'); return; } showLoading('Word raporu oluşturuluyor...', 'Veriler toplanıyor'); try { const data = window.lastAuditData; const now = new Date(); const dateStr = now.toLocaleDateString('tr-TR'); const resultArea = document.getElementById('resultArea'); let resultImg = ''; if (resultArea) { try { const origBg = resultArea.style.backgroundColor; resultArea.style.backgroundColor = '#ffffff'; const canvas = await html2canvas(resultArea, { scale: 2, backgroundColor: '#ffffff' }); resultArea.style.backgroundColor = origBg; resultImg = canvas.toDataURL('image/png'); } catch(e) {} } let itemsHTML = ''; data.details.forEach(item => { const statusColor = item.status ? '#155724' : '#721c24'; const statusText = item.status ? '✅ Uygun' : '❌ Uygun Değil'; itemsHTML += `<tr><td style="border:1px solid #b8860b;padding:8px;text-align:right;">${item.label}</td><td style="border:1px solid #b8860b;padding:8px;text-align:center;color:${statusColor};font-weight:bold;">${statusText}</td><td style="border:1px solid #b8860b;padding:8px;text-align:center;">${item.risk}</td><td style="border:1px solid #b8860b;padding:8px;text-align:center;">${item.note || '-'}</td><td style="border:1px solid #b8860b;padding:8px;text-align:right;">${item.status ? '-' : item.recommendation}</td></tr>`; }); const fullHtml = `<!DOCTYPE html><html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word'><head><meta charset='utf-8'><title>SOP Raporu - FAROUK GRUP</title><style>body{font-family:'Arial','Tajawal',sans-serif;direction:rtl;margin:2rem;background:#fff;color:#333;}.cover{text-align:center;border-bottom:4px solid #b8860b;margin-bottom:30px;padding-bottom:20px;}.cover h1{font-size:32px;color:#b8860b;margin:0;}.cover h2{font-size:24px;color:#b48554;margin:5px 0;}.cover p{color:#666;}table{width:100%;border-collapse:collapse;margin:20px 0;} th,td{border:1px solid #b8860b;padding:8px;text-align:center;}th{background:#fefcf6;color:#b8860b;font-weight:bold;}.signature{margin-top:40px;display:flex;justify-content:space-between;flex-wrap:wrap;}.chart-img{max-width:100%;border:1px solid #b8860b;border-radius:10px;margin:20px 0;}.footer{text-align:center;margin-top:40px;color:#888;border-top:1px dashed #b8860b;padding-top:10px;}</style></head><body><div class="cover"><h1>FAROUK GRUP</h1><h2>📋 Günlük SOP Denetim Raporu</h2><p>Tarih: ${data.date} | Denetçi: ${data.inspector}</p><p>Rapor Tarihi: ${dateStr}</p></div>${resultImg ? `<div style="text-align:center;margin:20px 0;"><img src="${resultImg}" style="max-width:100%;border:1px solid #b8860b;border-radius:10px;" /></div>` : ''}<h2 style="color:#b8860b;">Denetim Sonucu: ${data.percent}% - ${data.evaluation}</h2><h3 style="color:#b8860b;">Genel Risk Seviyesi: ${data.overallRiskLevel}</h3><table><thead><tr><th style="background:#fefcf6;color:#b8860b;border:1px solid #b8860b;padding:8px;">Kalem</th><th style="background:#fefcf6;color:#b8860b;border:1px solid #b8860b;padding:8px;">Durum</th><th style="background:#fefcf6;color:#b8860b;border:1px solid #b8860b;padding:8px;">Risk</th><th style="background:#fefcf6;color:#b8860b;border:1px solid #b8860b;padding:8px;">Notlar</th><th style="background:#fefcf6;color:#b8860b;border:1px solid #b8860b;padding:8px;">Öneri</th></tr></thead><tbody>${itemsHTML}</tbody></table><div class="signature"><div><strong>Denetçi Adı:</strong> ${data.signatureName}</div><div><strong>İmza:</strong> ${data.signature || '________________'}</div></div><div class="footer">FAROUK GRUP tarafından oluşturulmuştur © ${now.getFullYear()} | www.farouk-grup.com</div></body></html>`; const blob = new Blob(['\uFEFF' + fullHtml], { type: 'application/msword' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `SOP_Raporu_${data.date}_${now.toISOString().slice(0,10)}.doc`; link.click(); URL.revokeObjectURL(link.href); } catch(err) { alert('Word hatası: ' + err.message); } finally { hideLoading(); } });
+
+    document.getElementById('checkDate').value = new Date().toISOString().split('T')[0];
     setupRecommendations();
 </script>
 </body>
